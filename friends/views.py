@@ -21,7 +21,7 @@ def list_friends(request):
                               context_instance=RequestContext(request))
 
 @login_required
-def invite_friend(request, username, redirect_to_view=None, message=_("Friends? :)")):
+def invite_friend(request, username, redirect_to_view=None, message=_("I would like to add you to my friends.")):
     """
     Invite user to be user friend.
     """
