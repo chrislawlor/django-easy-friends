@@ -1,0 +1,12 @@
+{% extends 'friends/base.html' %}
+{% load i18n %}
+
+{% block friends_title %}{% if status == 'received' %}{% trans "Received invitations" %}{% endif %}{% if status == 'sent' %}{% trans "Sent invitations" %}{% endif %}{% endblock %}
+
+{% block friends_content %}
+<ul>
+{% for invitation in invitations %}
+	<li>{{ invitation.from_user }} {{ invitation.message }} {{ invitation.sent }} {{ invitation.status }}</li>
+{% endfor %}
+</ul>
+{% endblock %}
