@@ -15,9 +15,9 @@ def list_friends(request):
     """
     Lists friends of currently logged user.
     """
-    users = Friendship.objects.friends_for_user(request.user)
+    friends = Friendship.objects.friends_for_user(request.user)
     return render_to_response('friends/friends_list.html',
-                              {'users': users},
+                              {'friends': friends},
                               context_instance=RequestContext(request))
 
 @login_required
