@@ -5,9 +5,11 @@ from django.utils.translation import ugettext as _
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.contrib import messages
+from django.core.exceptions import PermissionDenied
 
 from friends.models import Friendship, FriendshipInvitation
 from friends.forms import InviteFriendForm, RemoveFriendForm
+from friends import settings as friends_settings
 
 
 @login_required
@@ -19,6 +21,27 @@ def list_friends(request):
     return render_to_response('friends/friends_list.html',
                               {'friends': friends},
                               context_instance=RequestContext(request))
+
+@login_required
+def list_friend_friends(request, username):
+    """
+    Lists friends of user friend.
+    """
+    # showing friends of friends can be disabled or enabled in settings
+    if not friends_settings.SHOW_FRIENDS_OF_FRIEND:
+        raise PermissionDenied
+
+    user = get_object_or_404(User, username=username)
+
+    # check if user specified by username is friend of current user
+    if not Friendship.objects.are_friends(request.user, user):
+        raise PermissionDenied
+
+    friends = Friendship.objects.friends_for_user(user)
+    return render_to_response('friends/friends_of_friend.html',
+                              {'friends': friends},
+                              context_instance=RequestContext(request))
+
 
 @login_required
 def invite_friend(request, username, redirect_to_view=None, message=_("I would like to add you to my friends.")):
