@@ -2,11 +2,7 @@ from django.conf import settings
 from django.db import models
 from django.db.models import Q
 
-
-if "notification" in settings.INSTALLED_APPS:
-    from notification import models as notification
-else:
-    notification = None
+from friends import signals as friends_signals
 
 
 class FriendshipManager(models.Manager):
@@ -39,8 +35,7 @@ class FriendshipInvitationManager(models.Manager):
 
     def create_friendship_request(self, from_user, to_user, message=None):
         inv = self.create(from_user=from_user, to_user=to_user, message=message or "")
-        if notification:
-            notification.send([to_user], "friends_invite", {"invitation": inv})
-            notification.send([from_user], "friends_invite_sent", {"invitation": inv})
+        friends_signals.invitation_received.send(sender=None, from_user=from_user, to_user=to_user, invitation=inv)
+        friends_signals.invitation_sent.send(sender=None, from_user=from_user, to_user=to_user, invitation=inv)
         return inv
 

@@ -2,15 +2,12 @@ from django.conf import settings
 from django.db import models
 from django.db.models import signals
 from django.contrib.auth.models import User
+from django.dispatch import receiver
 
 from friends.utils import get_datetime_now
 from friends.managers import FriendshipManager, FriendshipInvitationManager
-
-
-if "notification" in settings.INSTALLED_APPS:
-    from notification import models as notification
-else:
-    notification = None
+from friends.signals import invitation_received, invitation_sent, acceptance_received, acceptance_sent
+from friends import settings as friends_settings
 
 
 class Friendship(models.Model):
@@ -46,9 +43,8 @@ class FriendshipInvitation(models.Model):
         if not Friendship.objects.are_friends(self.to_user, self.from_user):
             friendship = Friendship(to_user=self.to_user, from_user=self.from_user)
             friendship.save()
-            if notification:
-                notification.send([self.from_user], "friends_accept", {"to_user": self.to_user})
-                notification.send([self.to_user], "friends_accept_sent", {"from_user": self.from_user})
+            acceptance_received.send(sender=None, from_user=self.from_user, to_user=self.to_user)
+            acceptance_sent.send(sender=None, from_user=self.from_user, to_user=self.to_user)
         self.delete()
 
     def decline(self):
@@ -56,13 +52,38 @@ class FriendshipInvitation(models.Model):
 
 
 
+@receiver(signals.pre_delete, sender=Friendship)
 def delete_friendship(sender, instance, **kwargs):
     friendship_invitations = FriendshipInvitation.objects.filter(
-        to_user = instance.to_user,
-        from_user = instance.from_user,
+        to_user=instance.to_user,
+        from_user=instance.from_user,
     )
     for friendship_invitation in friendship_invitations:
         friendship_invitation.delete()
 
 
-signals.pre_delete.connect(delete_friendship, sender=Friendship)
+if friends_settings.FRIENDS_USE_NOTIFICATION_APP and "notification" in settings.INSTALLED_APPS:
+    from notification import models as notification
+else:
+    notification = None
+
+@receiver(invitation_received)
+def send_invitation_received_notification(sender, from_user, to_user, invitation, **kwargs):
+    if notification:
+        notification.send([to_user], "friends_invite", {"invitation": invitation})
+
+@receiver(invitation_sent)
+def send_invitation_sent_notification(sender, from_user, to_user, invitation, **kwargs):
+    if notification:
+        notification.send([from_user], "friends_invite_sent", {"invitation": invitation})
+
+@receiver(acceptance_received)
+def send_acceptance_received_notification(sender, from_user, to_user, **kwargs):
+    if notification:
+        notification.send([from_user], "friends_accept", {"to_user": to_user})
+
+@receiver(acceptance_sent)
+def send_acceptance_sent_notification(sender, from_user, to_user, **kwargs):
+    if notification:
+        notification.send([to_user], "friends_accept_sent", {"from_user": from_user})
+
