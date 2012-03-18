@@ -6,7 +6,7 @@ from django.dispatch import receiver
 
 from friends.utils import get_datetime_now
 from friends.managers import FriendshipManager, FriendshipInvitationManager
-from friends.signals import invitation_received, invitation_sent, acceptance_received, acceptance_sent
+from friends.signals import friendship_invitation_sent, friendship_acceptance_sent
 from friends import settings as friends_settings
 
 
@@ -43,8 +43,7 @@ class FriendshipInvitation(models.Model):
         if not Friendship.objects.are_friends(self.to_user, self.from_user):
             friendship = Friendship(to_user=self.to_user, from_user=self.from_user)
             friendship.save()
-            acceptance_received.send(sender=None, from_user=self.from_user, to_user=self.to_user)
-            acceptance_sent.send(sender=None, from_user=self.from_user, to_user=self.to_user)
+            friendship_acceptance_sent.send(sender=None, from_user=self.from_user, to_user=self.to_user)
         self.delete()
 
     def decline(self):
@@ -67,23 +66,24 @@ if friends_settings.FRIENDS_USE_NOTIFICATION_APP and "notification" in settings.
 else:
     notification = None
 
-@receiver(invitation_received)
-def send_invitation_received_notification(sender, from_user, to_user, invitation, **kwargs):
-    if notification:
-        notification.send([to_user], "friends_invite", {"invitation": invitation})
 
-@receiver(invitation_sent)
+@receiver(friendship_invitation_sent, dispatch_uid="friends_send_invitation_sent_notification")
 def send_invitation_sent_notification(sender, from_user, to_user, invitation, **kwargs):
     if notification:
+        notification.send([to_user], "friends_invite", {"invitation": invitation})
         notification.send([from_user], "friends_invite_sent", {"invitation": invitation})
 
-@receiver(acceptance_received)
-def send_acceptance_received_notification(sender, from_user, to_user, **kwargs):
-    if notification:
-        notification.send([from_user], "friends_accept", {"to_user": to_user})
-
-@receiver(acceptance_sent)
+@receiver(friendship_acceptance_sent, dispatch_uid="friends_send_acceptance_sent_notification")
 def send_acceptance_sent_notification(sender, from_user, to_user, **kwargs):
     if notification:
         notification.send([to_user], "friends_accept_sent", {"from_user": from_user})
+        notification.send([from_user], "friends_accept", {"to_user": to_user})
+        for user in Friendship.objects.friends_for_user(to_user):
+            if user != from_user:
+                notification.send([user], "friends_otherconnect", {"your_friend": to_user, "new_friend": from_user})
+        for user in Friendship.objects.friends_for_user(from_user):
+            if user != to_user:
+                notification.send([user], "friends_otherconnect", {"your_friend": from_user, "new_friend": to_user})
+
+
 

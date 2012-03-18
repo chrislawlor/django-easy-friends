@@ -1,2 +1,2 @@
-{% load i18n %}{% url profile_detail username=invitation.to_user.username as user_url %}
-{% blocktrans with invitation.to_user as invitation_user %}<a href="{{ user_url }}">{{ invitation_user }}</a> has accepted your friend request.{% endblocktrans %}
+{% load i18n %}
+{% blocktrans with invitation.to_user as invitation_to_user and invitation.to_user.get_profile.get_absolute_url as user_url %}<a href="{{ user_url }}">{{ invitation_to_user }}</a> has accepted your friend request.{% endblocktrans %}
