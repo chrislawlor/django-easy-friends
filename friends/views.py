@@ -39,7 +39,8 @@ def list_friend_friends(request, username):
 
     friends = Friendship.objects.friends_for_user(user)
     return render_to_response('friends/friends_of_friend.html',
-                              {'friends': friends},
+                              {'friends': friends,
+                               'friend': user},
                               context_instance=RequestContext(request))
 
 
@@ -48,6 +49,7 @@ def invite_friend(request, username, redirect_to_view=None, message=_("I would l
     """
     Invite user to be user friend.
     """
+    friend = get_object_or_404(User, username=username)
     if request.method == "POST":
         form = InviteFriendForm(data=request.POST, user=request.user)
         if form.is_valid():
@@ -60,7 +62,7 @@ def invite_friend(request, username, redirect_to_view=None, message=_("I would l
         form = InviteFriendForm(initial={'to_user': username, 'message': message})
     return render_to_response('friends/friend_invite.html',
                               {'form': form,
-                               'username': username},
+                               'friend': friend},
                               context_instance=RequestContext(request))
 
 @login_required
@@ -68,6 +70,7 @@ def remove_friend(request, username, redirect_to_view=None):
     """
     Remove user from friends.
     """
+    friend = get_object_or_404(User, username=username)
     if request.method == "POST":
         form = RemoveFriendForm(data=request.POST, user=request.user)
         if form.is_valid():
@@ -80,7 +83,7 @@ def remove_friend(request, username, redirect_to_view=None):
         form = RemoveFriendForm(initial={'to_user': username})
     return render_to_response('friends/friend_remove.html',
                               {'form': form,
-                               'username': username},
+                               'friend': friend},
                               context_instance=RequestContext(request))
 
 @login_required
