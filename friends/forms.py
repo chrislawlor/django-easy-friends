@@ -61,13 +61,14 @@ class InviteFriendForm(UserForm):
     def save(self):
         to_user = User.objects.get(username=self.cleaned_data["to_user"])
         message = self.cleaned_data["message"]
-        invitation = FriendshipInvitation.objects.create_friendship_request(
+        invitation = FriendshipInvitation(
             from_user=self.user,
             to_user=to_user,
             message=message,
         )
         invitation.save()
         return invitation
+
 
 class RemoveFriendForm(UserForm):
 
@@ -92,3 +93,5 @@ class RemoveFriendForm(UserForm):
     def save(self):
         to_user = User.objects.get(username=self.cleaned_data["to_user"])
         Friendship.objects.remove(self.user, to_user)
+
+

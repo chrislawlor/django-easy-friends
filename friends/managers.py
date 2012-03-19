@@ -31,10 +31,3 @@ class FriendshipManager(models.Manager):
         friendship.delete()
 
 
-class FriendshipInvitationManager(models.Manager):
-
-    def create_friendship_request(self, from_user, to_user, message=None):
-        inv = self.create(from_user=from_user, to_user=to_user, message=message or "")
-        friendship_invitation_sent.send(sender=None, from_user=from_user, to_user=to_user, invitation=inv)
-        return inv
-
