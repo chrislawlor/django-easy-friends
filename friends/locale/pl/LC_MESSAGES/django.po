@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-02-26 00:57+0100\n"
-"PO-Revision-Date: 2012-02-26 00:59+0100\n"
+"POT-Creation-Date: 2012-03-19 20:07+0100\n"
+"PO-Revision-Date: 2012-03-19 20:09+0100\n"
 "Last-Translator: Maciej Marczewski <maciej@marczewski.net.pl>\n"
 "Language-Team: Polish <kde-i18n-doc@kde.org>\n"
 "MIME-Version: 1.0\n"
@@ -21,7 +21,7 @@ msgstr ""
 msgid "Message"
 msgstr "Wiadomość"
 
-#: forms.py:30 forms.py:81
+#: forms.py:30 forms.py:82
 msgid "Unknown user."
 msgstr "Nieznany użytkownik."
 
@@ -42,69 +42,89 @@ msgstr "Użytkownik %(username)s został już zaproszony do znajomych."
 #: forms.py:57
 #, python-format
 msgid "%(username)s has already requested friendship with you."
-msgstr "Użytkownik %(username)s zaprosił Cię już do znajomych."
+msgstr "Użytkownik %(username)s zaprosił cię już do znajomych."
 
-#: forms.py:88
+#: forms.py:89
 #, python-format
 msgid "%(username)s and you are not friends."
 msgstr "Nie jesteście znajomymi z użytkownikiem %(username)s."
 
-#: management.py:10
-msgid "Invitation Received"
+#: management.py:12
+#, fuzzy
+msgid "Invitation received"
 msgstr "Otrzymano zaproszenie"
 
-#: management.py:10
-msgid "you have received an invitation"
-msgstr "otrzymałeś zaproszenie"
+#: management.py:12
+msgid "You have received an invitation."
+msgstr "Otrzymałeś zaproszenie."
 
-#: management.py:11
-msgid "Invitation Sent"
+#: management.py:13
+#, fuzzy
+msgid "Invitation sent"
 msgstr "Zaproszenie wysłano"
 
-#: management.py:11
-msgid "you have sent an invitation"
-msgstr "wysłałeś zaproszenie"
+#: management.py:13
+msgid "You have sent an invitation."
+msgstr "Wysłałeś zaproszenie"
 
-#: management.py:12
-msgid "Acceptance Received"
+#: management.py:14
+#, fuzzy
+msgid "Acceptance received"
 msgstr "Akceptacja otrzymana"
 
-#: management.py:12
-msgid "an invitation you sent has been accepted"
-msgstr "zaproszenie, które wysłałeś zostało zaakceptowane"
+#: management.py:14
+msgid "An invitation you sent has been accepted."
+msgstr "Zaproszenie, które wysłałeś zostało zaakceptowane."
 
-#: management.py:13
-msgid "Acceptance Sent"
+#: management.py:15
+#, fuzzy
+msgid "Acceptance sent"
 msgstr "Akceptacja wysłana"
 
-#: management.py:13
-msgid "you have accepted an invitation you received"
-msgstr "zaakceptowałeś otrzymane zaproszenie"
+#: management.py:15
+msgid "You have accepted an invitation you received."
+msgstr "Zaakceptowałeś otrzymane zaproszenie."
 
-#: views.py:24
+#: management.py:17
+msgid "Other connection"
+msgstr "Znajomy znajomego"
+
+#: management.py:17
+msgid "One of your friends has a new friend."
+msgstr "Jeden z twoich znajomych ma nowego znajomego."
+
+#: management.py:19
+msgid "Friend removed"
+msgstr "Znajomy usunięty"
+
+#: management.py:19
+msgid "One person was removed from your friends."
+msgstr "Jedna osoba została usunięta ze znajomych."
+
+#: views.py:48
 msgid "I would like to add you to my friends."
 msgstr "Chciałbym dodać Cię do moich znajomych."
 
-#: views.py:32
+#: views.py:57
 #, python-format
 msgid "Friendship invitation for %(username)s was created."
 msgstr ""
 "Zaproszenie do znajomych dla użytkownika %(username)s zostało utworzone."
 
-#: views.py:52
+#: views.py:78
 #, python-format
 msgid "User %(username)s removed from friends."
 msgstr "Użytkownik %(username)s został usunięty ze znajomych."
 
-#: views.py:109
+#: views.py:135
 msgid "Invitation deleted."
 msgstr "Zaproszenie usunięte."
 
-#: views.py:125
+#: views.py:151
 msgid "Invitation accepted."
 msgstr "Zaproszenie zaakceptowane."
 
-#: views.py:128
+#: views.py:154
 msgid "Invitation declined."
 msgstr "Zaproszenie odrzucone."
 
@@ -114,12 +134,53 @@ msgstr "Znajomi"
 
 #: templates/friends/friend_invite.html:4
 #, python-format
-msgid "Invite %(username)s to your friends"
-msgstr "Zaproś użytkownika %(username)s do znajomych"
+msgid "Invite %(friend)s to your friends"
+msgstr "Zaproś użytkownika %(friend)s do znajomych"
 
 #: templates/friends/friend_invite.html:11
 msgid "Invite"
 msgstr "Zaproś"
+
+#: templates/friends/friend_remove.html:4
+#, python-format
+msgid "Remove %(friend)s from your friends"
+msgstr "Usuń użytkownika %(friend)s ze znajomych"
+
+#: templates/friends/friend_remove.html:8
+#, python-format
+msgid "Are you sure you want to remove %(friend)s from your friends?"
+msgstr "Na pewno chcesz usunąć użytkownika %(friend)s ze znajomych?"
+
+#: templates/friends/friend_remove.html:12
+msgid "Remove"
+msgstr "Usuń"
+
+#: templates/friends/friends_of_friend.html:4
+#, python-format
+msgid "%(friend)s's friends"
+msgstr "Znajomi użytkownika %(friend)s"
+
+#: templates/friends/invitation_show.html:5
+#, python-format
+msgid "Friends request from %(from_user)s"
+msgstr "Zaproszenie do znajomych od użytkownika %(from_user)s"
+
+#: templates/friends/invitation_show.html:6
+#, python-format
+msgid "Friends request to %(to_user)s"
+msgstr "Zaproszenie do znajomych do użytkownika %(to_user)s"
+
+#: templates/friends/invitation_show.html:15
+msgid "Accept"
+msgstr "Zaakceptuj"
+
+#: templates/friends/invitation_show.html:16
+msgid "Decline"
+msgstr "Odrzuć"
+
+#: templates/friends/invitation_show.html:19
+msgid "Delete"
+msgstr "Usuń"
 
 #: templates/friends/invitations_list.html:4
 msgid "Received invitations"
@@ -129,6 +190,30 @@ msgstr "Otrzymane zaproszenia"
 msgid "Sent invitations"
 msgstr "Wysłane zaproszenia"
 
+#: templates/friends/invitations_list.html:10
+msgid "From"
+msgstr "Od"
+
+#: templates/friends/invitations_list.html:10
+msgid "To"
+msgstr "Do"
+
+#: templates/friends/invitations_list.html:11
+msgid "Received"
+msgstr "Otrzymano"
+
+#: templates/friends/invitations_list.html:11
+msgid "Sent"
+msgstr "Wysłano"
+
+#: templates/friends/invitations_list.html:12
+msgid "Invitation"
+msgstr "Zaproszenie"
+
+#: templates/friends/invitations_list.html:22
+msgid "Details"
+msgstr "Szczegóły"
+
 #: templates/notification/friends_accept/full.txt:1
 #, python-format
 msgid "%(invitation_to_user)s has accepted your friend request."
@@ -137,16 +222,18 @@ msgstr ""
 "znajomych."
 
 #: templates/notification/friends_accept/notice.html:2
-#, python-format
+#, fuzzy, python-format
 msgid ""
-"<a href=\"%(user_url)s\">%(invitation_user)s</a> has accepted your friend "
+"<a href=\"%(user_url)s\">%(invitation_to_user)s</a> has accepted your friend "
 "request."
 msgstr ""
+"Użytkownik <a href=\"%(user_url)s\">%(invitation_to_user)s</a> zaakceptował "
+"Twoje zaproszenie do znajomych."
 
 #: templates/notification/friends_accept_sent/full.txt:1
 #, python-format
 msgid "You accepted %(invitation_from_user)s's friend request."
-msgstr ""
+msgstr "Zaakceptowałeś zaproszenie użytkownika %(invitation_from_user)s."
 
 #: templates/notification/friends_accept_sent/notice.html:2
 #, python-format
@@ -154,6 +241,22 @@ msgid ""
 "You accepted <a href=\"%(user_url)s\">%(invitation_from_user)s</a>'s friend "
 "request."
 msgstr ""
+"Zaakceptowałeś zaproszenie użytkownika <a href=\"%(user_url)s\">%"
+"(invitation_from_user)s</a>."
+
+#: templates/notification/friends_friend_removed/full.txt:2
+#, python-format
+msgid "%(removed_friend)s was removed from your friends."
+msgstr "Użytkownik %(removed_friend)s został usunięty ze znajomych."
+
+#: templates/notification/friends_friend_removed/notice.html:2
+#, python-format
+msgid ""
+"<a href=\"%(user_url)s\">%(removed_friend)s</a> was removed from your "
+"friends."
+msgstr ""
+"Użytkownik <a href=\"%(user_url)s\">%(removed_friend)s</a> został usunięty "
+"ze znajomych."
 
 #: templates/notification/friends_invite/full.txt:1
 #, python-format
@@ -161,25 +264,48 @@ msgid ""
 "%(invitation_from_user)s has requested to add you as a friend. You can "
 "accept their invitation at:\n"
 "\n"
-"http://%(current_site)s%(invitation_page)s\n"
+"http://%(current_site)s%(invitations_page)s\n"
 msgstr ""
+"Użytkownik %(invitation_from_user)s poprosił Cię o zgodę na dodanie do "
+"znajomych. Możesz zaakceptować zaproszenie tu:\n"
+"\n"
+"http://%(current_site)s%(invitations_page)s\n"
 
 #: templates/notification/friends_invite/notice.html:2
 #, python-format
 msgid ""
 "<a href=\"%(user_url)s\">%(invitation_from_user)s</a> has requested to add "
-"you as a friend (see <a href=\"%(invitation_page)s\">invitations</a>)"
+"you as a friend (see <a href=\"%(invitations_page)s\">invitations</a>)."
 msgstr ""
+"Użytkownik <a href=\"%(user_url)s\">%(invitation_from_user)s</a> poprosił "
+"Cię o zgodę na dodanie do znajomych (zobacz <a href=\"%(invitations_page)s"
+"\">zaproszenia</a>)."
 
 #: templates/notification/friends_invite_sent/full.txt:1
 #, python-format
-msgid "you have invited %(invitation_to_user)s to add you as a friend."
-msgstr ""
+msgid "You have invited %(invitation_to_user)s to add you as a friend."
+msgstr "Zaprosiłeś użytkownika %(invitation_to_user)s do znajomych."
 
 #: templates/notification/friends_invite_sent/notice.html:2
 #, python-format
 msgid ""
-"you have invited <a href=\"%(user_url)s\">%(invitation_to_user)s</a> to add "
+"You have invited <a href=\"%(user_url)s\">%(invitation_to_user)s</a> to add "
 "you as a friend."
 msgstr ""
+"Zaprosiłeś użytkownika <a href=\"%(user_url)s\">%(invitation_to_user)s</a> "
+"do znajomych."
+
+#: templates/notification/friends_otherconnect/full.txt:1
+#, python-format
+msgid "Your friend %(your_friend)s and %(new_friend)s are now friends."
+msgstr "Twój znajomy %(your_friend)s i %(new_friend)s są teraz znajomymi."
+
+#: templates/notification/friends_otherconnect/notice.html:2
+#, python-format
+msgid ""
+"Your friend <a href=\"%(your_friend_url)s\">%(your_friend)s</a> and <a href="
+"\"%(new_friend_url)s\">%(new_friend)s</a> are now friends."
+msgstr ""
+"Twój znajomy <a href=\"%(your_friend_url)s\">%(your_friend)s</a> i <a href="
+"\"%(new_friend_url)s\">%(new_friend)s</a> są teraz znajomymi."
 
