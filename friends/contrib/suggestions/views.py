@@ -15,7 +15,7 @@ from friends.contrib.suggestions.settings import RUNNER
 def _import_success(request, results):
     if results.ready():
         if results.status == "DONE":
-            messages.success(request, _("%(total)s people with email found, %(imported)s contacts imported.") % results.result)
+            messages.success(request, _("%(total)s people with email found, %(imported)s new contacts imported, %(suggestions)s new friendship suggestions added.") % results.result)
         elif results.status == "FAILURE":
             messages.error(request, message=_("There was an error importing your contacts."))
     else:
