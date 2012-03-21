@@ -2,7 +2,6 @@ from django.conf import settings
 from django.db import models
 from django.db.models.signals import pre_delete, post_save
 from django.contrib.auth.models import User
-from django.dispatch import receiver
 
 from friends.utils import get_datetime_now
 from friends.managers import FriendshipManager
@@ -49,18 +48,23 @@ class FriendshipInvitation(models.Model):
 
 # signals receivers to send notifications
 
+if "notification" in settings.INSTALLED_APPS:
+    from notification import models as notification
+else:
+    notification = None
+
 def send_invitation_sent_notification(sender, instance, created, **kwargs):
-    if created:
+    if notification and created:
         notification.send([instance.to_user], "friends_invite", {"invitation": instance})
         notification.send([instance.from_user], "friends_invite_sent", {"invitation": instance})
 
 def send_acceptance_sent_notification(sender, instance, created, **kwargs):
-    if created:
+    if notification and created:
         notification.send([instance.to_user], "friends_accept_sent", {"from_user": instance.from_user})
         notification.send([instance.from_user], "friends_accept", {"to_user": instance.to_user})
 
 def send_otherconnect_notification(sender, instance, created, **kwargs):
-    if created:
+    if notification and created:
         for user in Friendship.objects.friends_for_user(instance.to_user):
             if user != instance.from_user:
                 notification.send([user], "friends_otherconnect", {"your_friend": instance.to_user, "new_friend": instance.from_user})
@@ -69,13 +73,13 @@ def send_otherconnect_notification(sender, instance, created, **kwargs):
                 notification.send([user], "friends_otherconnect", {"your_friend": instance.from_user, "new_friend": instance.to_user})
 
 def send_friend_removed_notification(sender, instance, **kwargs):
-    notification.send([instance.to_user], "friends_friend_removed", {"removed_friend": instance.from_user})
-    notification.send([instance.from_user], "friends_friend_removed", {"removed_friend": instance.to_user})
+    if notification:
+        notification.send([instance.to_user], "friends_friend_removed", {"removed_friend": instance.from_user})
+        notification.send([instance.from_user], "friends_friend_removed", {"removed_friend": instance.to_user})
 
 
 
-if friends_settings.FRIENDS_USE_NOTIFICATION_APP and "notification" in settings.INSTALLED_APPS:
-    from notification import models as notification
+if notification and friends_settings.FRIENDS_USE_NOTIFICATION_APP:
 
     post_save.connect(send_invitation_sent_notification, sender=FriendshipInvitation, dispatch_uid="friends_send_invitation_sent_notification")
 

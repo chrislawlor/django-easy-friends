@@ -22,6 +22,7 @@ def list_friends(request):
                               {'friends': friends},
                               context_instance=RequestContext(request))
 
+
 @login_required
 def list_friend_friends(request, username):
     """
@@ -65,6 +66,7 @@ def invite_friend(request, username, redirect_to_view=None, message=_("I would l
                                'friend': friend},
                               context_instance=RequestContext(request))
 
+
 @login_required
 def remove_friend(request, username, redirect_to_view=None):
     """
@@ -86,6 +88,7 @@ def remove_friend(request, username, redirect_to_view=None):
                                'friend': friend},
                               context_instance=RequestContext(request))
 
+
 @login_required
 def list_received_invitations(request):
     """
@@ -97,6 +100,7 @@ def list_received_invitations(request):
                                'status': 'received'},
                               context_instance=RequestContext(request))
 
+
 @login_required
 def list_sent_invitations(request):
     """
@@ -107,6 +111,7 @@ def list_sent_invitations(request):
                               {'invitations': invitations,
                                'status': 'sent'},
                               context_instance=RequestContext(request))
+
 
 @login_required
 def show_invitation(request, invitation_id):
@@ -120,6 +125,7 @@ def show_invitation(request, invitation_id):
     return render_to_response('friends/invitation_show.html',
                               {'invitation': invitation},
                               context_instance=RequestContext(request))
+
 
 @login_required
 def remove_invitation(request, invitation_id, redirect_to_view=None):
@@ -136,6 +142,7 @@ def remove_invitation(request, invitation_id, redirect_to_view=None):
     if not redirect_to_view:
         redirect_to_view = list_friends
     return redirect(redirect_to_view)
+
 
 @login_required
 def respond_to_invitation(request, invitation_id, resp='a', redirect_to_view=None):
