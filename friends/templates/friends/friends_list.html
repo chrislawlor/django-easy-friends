@@ -6,7 +6,7 @@
 {% block friends_content %}
 <ul>
 {% for friend in friends %}
-	<li><a href="{{ friend.get_profile.get_absolute_url }}">{{ friend }}</a></li>
+	<li><a href="{% url profile_detail username=friend.username %}">{{ friend }}</a> (<a href="{% url friends_remove friend.username %}">{% trans "remove from friends" %}</a>)</li>
 {% endfor %}
 </ul>
 {% endblock %}

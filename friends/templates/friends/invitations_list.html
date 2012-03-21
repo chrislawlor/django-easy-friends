@@ -15,7 +15,7 @@
 	<tbody>{% for invitation in invitations %}
 		<tr>
 			<td>
-				<a href="{% if status == 'received' %}{{ invitation.from_user.get_profile.get_absolute_url }}{% endif %}{% if status == 'sent' %}{{ invitation.to_user.get_profile.get_absolute_url }}{% endif %}">{% if status == 'received' %}{{ invitation.from_user }}{% endif %}{% if status == 'sent' %}{{ invitation.to_user }}{% endif %}</a>
+				<a href="{% if status == 'received' %}{% url profile_detail username=from_user.username %}{% endif %}{% if status == 'sent' %}{% url profile_detail username=to_user.username %}{% endif %}">{% if status == 'received' %}{{ invitation.from_user }}{% endif %}{% if status == 'sent' %}{{ invitation.to_user }}{% endif %}</a>
 			</td>
 			<td>{{ invitation.sent }}</td>
 			<td>

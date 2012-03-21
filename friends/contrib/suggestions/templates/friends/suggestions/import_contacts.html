@@ -1,0 +1,8 @@
+{% extends 'friends/base.html' %}
+{% load i18n %}
+
+{% block friends_title %}{% trans "Import contacts" %}{% endblock %}
+
+{% block friends_content %}
+	<a href="{% url friends_suggestions_import_google_contacts %}">Google</a>
+{% endblock %}

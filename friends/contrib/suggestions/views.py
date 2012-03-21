@@ -1,7 +1,7 @@
 from django.contrib import messages
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
-from django.shortcuts import render_to_response, redirect
+from django.shortcuts import render_to_response
 from django.template import RequestContext
 from django.utils.translation import ugettext as _
 from django.contrib.auth.decorators import login_required
@@ -10,6 +10,18 @@ from gdata.contacts.service import ContactsService
 
 from friends.contrib.suggestions.backends.importers import GoogleImporter
 from friends.contrib.suggestions.settings import RUNNER
+from friends.contrib.suggestions.models import FriendshipSuggestion
+
+
+@login_required
+def suggested_friends(request, template_name="friends/suggestions/suggested_friends.html"):
+    """
+    List suggested friends.
+    """
+    suggested_friends = FriendshipSuggestion.objects.suggested_friends_for_user(request.user)
+    return render_to_response(template_name,
+                              {"suggested_friends": suggested_friends},
+                              context_instance=RequestContext(request))
 
 
 def _import_success(request, results):
@@ -25,7 +37,7 @@ def _import_success(request, results):
 
 
 @login_required
-def import_contacts(request, template_name="suggestions/import_contacts.html"):
+def import_contacts(request, template_name="friends/suggestions/import_contacts.html"):
     """
     """
 
