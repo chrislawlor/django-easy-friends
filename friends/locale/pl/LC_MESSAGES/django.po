@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-03-19 20:07+0100\n"
-"PO-Revision-Date: 2012-03-19 20:09+0100\n"
+"PO-Revision-Date: 2012-03-21 02:09+0100\n"
 "Last-Translator: Maciej Marczewski <maciej@marczewski.net.pl>\n"
 "Language-Team: Polish <kde-i18n-doc@kde.org>\n"
 "MIME-Version: 1.0\n"
@@ -50,7 +50,6 @@ msgid "%(username)s and you are not friends."
 msgstr "Nie jesteście znajomymi z użytkownikiem %(username)s."
 
 #: management.py:12
-#, fuzzy
 msgid "Invitation received"
 msgstr "Otrzymano zaproszenie"
 
@@ -59,16 +58,14 @@ msgid "You have received an invitation."
 msgstr "Otrzymałeś zaproszenie."
 
 #: management.py:13
-#, fuzzy
 msgid "Invitation sent"
 msgstr "Zaproszenie wysłano"
 
 #: management.py:13
 msgid "You have sent an invitation."
-msgstr "Wysłałeś zaproszenie"
+msgstr "Wysłałeś zaproszenie."
 
 #: management.py:14
-#, fuzzy
 msgid "Acceptance received"
 msgstr "Akceptacja otrzymana"
 
@@ -77,7 +74,6 @@ msgid "An invitation you sent has been accepted."
 msgstr "Zaproszenie, które wysłałeś zostało zaakceptowane."
 
 #: management.py:15
-#, fuzzy
 msgid "Acceptance sent"
 msgstr "Akceptacja wysłana"
 
@@ -218,17 +214,17 @@ msgstr "Szczegóły"
 #, python-format
 msgid "%(invitation_to_user)s has accepted your friend request."
 msgstr ""
-"Użytkownik %(invitation_to_user)s zaakceptował Twoje zaproszenie do "
+"Użytkownik %(invitation_to_user)s zaakceptował twoje zaproszenie do "
 "znajomych."
 
 #: templates/notification/friends_accept/notice.html:2
-#, fuzzy, python-format
+#, python-format
 msgid ""
 "<a href=\"%(user_url)s\">%(invitation_to_user)s</a> has accepted your friend "
 "request."
 msgstr ""
 "Użytkownik <a href=\"%(user_url)s\">%(invitation_to_user)s</a> zaakceptował "
-"Twoje zaproszenie do znajomych."
+"twoje zaproszenie do znajomych."
 
 #: templates/notification/friends_accept_sent/full.txt:1
 #, python-format
@@ -266,7 +262,7 @@ msgid ""
 "\n"
 "http://%(current_site)s%(invitations_page)s\n"
 msgstr ""
-"Użytkownik %(invitation_from_user)s poprosił Cię o zgodę na dodanie do "
+"Użytkownik %(invitation_from_user)s poprosił cię o zgodę na dodanie do "
 "znajomych. Możesz zaakceptować zaproszenie tu:\n"
 "\n"
 "http://%(current_site)s%(invitations_page)s\n"
@@ -278,7 +274,7 @@ msgid ""
 "you as a friend (see <a href=\"%(invitations_page)s\">invitations</a>)."
 msgstr ""
 "Użytkownik <a href=\"%(user_url)s\">%(invitation_from_user)s</a> poprosił "
-"Cię o zgodę na dodanie do znajomych (zobacz <a href=\"%(invitations_page)s"
+"cię o zgodę na dodanie do znajomych (zobacz <a href=\"%(invitations_page)s"
 "\">zaproszenia</a>)."
 
 #: templates/notification/friends_invite_sent/full.txt:1
@@ -308,4 +304,5 @@ msgid ""
 msgstr ""
 "Twój znajomy <a href=\"%(your_friend_url)s\">%(your_friend)s</a> i <a href="
 "\"%(new_friend_url)s\">%(new_friend)s</a> są teraz znajomymi."
+
 
