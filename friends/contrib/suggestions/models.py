@@ -22,6 +22,7 @@ class FriendshipSuggestion(models.Model):
 
     class Meta:
         unique_together = [("to_user", "from_user")]
+        db_table = 'friends_suggestions_friendshipsuggestion'
 
 
 class ImportedContact(models.Model):
@@ -33,7 +34,7 @@ class ImportedContact(models.Model):
 
     name = models.CharField(_("name"), max_length=100, null=True, blank=True)
     # Facebook does not give emails of user friends so email can be blank and
-    # matching should be done using only frst and last name
+    # matching should be done using only name
     email = models.EmailField(_("email"), null=True, blank=True)
 
     added = models.DateTimeField(_("added"), default=get_datetime_now)
@@ -50,5 +51,8 @@ class ImportedContact(models.Model):
 
     def __unicode__(self):
         return _("%s (%s's contact)") % (self.display_name, self.owner)
+
+    class Meta:
+        db_table = 'friends_suggestions_importedcontact'
 
 
