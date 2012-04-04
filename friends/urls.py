@@ -41,7 +41,7 @@ urlpatterns = patterns('friends.views',
        {'resp': 'd'},
        name='friends_decline_invitation'),
 
-    url(r'(?P<username>[\.\w]+)/$',
+    url(r'^of_friend/(?P<username>[\.\w]+)/$',
         'list_friend_friends',
         name='friends_friend_friends'),
 
