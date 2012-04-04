@@ -19,7 +19,7 @@ class SynchronousResult(object):
 
     def __init__(self, result):
         self.result = result
-        self.status = "DONE"
+        self.status = "SUCCESS"
 
     def ready(self):
         return True

@@ -4,5 +4,7 @@
 {% block friends_title %}{% trans "Import contacts" %}{% endblock %}
 
 {% block friends_content %}
-	<a href="{% url friends_suggestions_import_google_contacts %}">Google</a>
+	{% if not import_in_progress %}
+		<a href="{% url friends_suggestions_import_google_contacts %}">Google</a>
+	{% endif %}
 {% endblock %}
