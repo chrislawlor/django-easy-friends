@@ -56,7 +56,7 @@ def import_contacts(request, template_name="friends/suggestions/import_contacts.
     if import_contacts_task_id:
         from celery.result import AsyncResult
         results = AsyncResult(import_contacts_task_id)
-        import_in_progress = _import_status(request, results)
+        import_in_progress = not _import_status(request, results)
 
     else:
         google_authsub_token = request.session.pop("google_authsub_token", None)
@@ -66,7 +66,7 @@ def import_contacts(request, template_name="friends/suggestions/import_contacts.
                                   user=request.user,
                                   authsub_token=google_authsub_token)
             results = runner.import_contacts()
-            import_in_progress = _import_status(request, results)
+            import_in_progress = not _import_status(request, results)
 
     return render_to_response(template_name,
                               {'import_in_progress': import_in_progress},
