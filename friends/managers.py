@@ -21,10 +21,10 @@ class FriendshipManager(models.Manager):
         ).count() > 0
 
     def remove(self, user1, user2):
-        if self.filter(from_user=user1, to_user=user2):
-            friendship = self.filter(from_user=user1, to_user=user2)
-        elif self.filter(from_user=user2, to_user=user1):
+        friendship = self.filter(from_user=user1, to_user=user2)
+        if not friendship:
             friendship = self.filter(from_user=user2, to_user=user1)
-        friendship.delete()
+        if friendship:
+            friendship.delete()
 
 

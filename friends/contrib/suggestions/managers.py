@@ -22,11 +22,11 @@ class FriendshipSuggestionManager(models.Manager):
         ).count() > 0
 
     def remove(self, user1, user2):
-        if self.filter(from_user=user1, to_user=user2):
-            friendship_suggestion = self.filter(from_user=user1, to_user=user2)
-        elif self.filter(from_user=user2, to_user=user1):
+        friendship_suggestion = self.filter(from_user=user1, to_user=user2)
+        if not friendship_suggestion:
             friendship_suggestion = self.filter(from_user=user2, to_user=user1)
-        friendship_suggestion.delete()
+        if friendship_suggestion:
+            friendship_suggestion.delete()
 
     def create_suggestions_for_user_using_imported_contacts(self, user):
         """

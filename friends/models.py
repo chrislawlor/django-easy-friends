@@ -40,6 +40,9 @@ class FriendshipInvitation(models.Model):
             friendship = Friendship(to_user=self.to_user, from_user=self.from_user)
             friendship.save()
         self.delete()
+        if "friends.contrib.suggestions" in settings.INSTALLED_APPS:
+            from friends.contrib.suggestions.models import FriendshipSuggestion
+            FriendshipSuggestion.objects.remove(self.to_user, self.from_user)
 
     def decline(self):
         self.delete()
