@@ -5,6 +5,11 @@
 
 {% block friends_content %}
 	{% if not import_in_progress %}
-		<a href="{% url friends_suggestions_import_google_contacts %}">Google</a>
+		<p>{% trans "Select service from which you want to import your contacts:" %}</p>
+		<ul class="contact-importers">
+			<li><a href="{% url friends_suggestions_import_google_contacts %}">Google</a></li>
+		</ul>
+	{% else %}
+		<p>{% trans "Import of your contacts is alreadyrunning. Please wait until it finishes and then try again." %}</p>
 	{% endif %}
 {% endblock %}
