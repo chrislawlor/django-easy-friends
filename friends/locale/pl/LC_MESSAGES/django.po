@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-03-19 20:07+0100\n"
-"PO-Revision-Date: 2012-03-21 02:09+0100\n"
+"POT-Creation-Date: 2012-04-04 23:35+0200\n"
+"PO-Revision-Date: 2012-04-04 23:37+0200\n"
 "Last-Translator: Maciej Marczewski <maciej@marczewski.net.pl>\n"
 "Language-Team: Polish <kde-i18n-doc@kde.org>\n"
 "MIME-Version: 1.0\n"
@@ -97,34 +97,105 @@ msgstr "Znajomy usunięty"
 msgid "One person was removed from your friends."
 msgstr "Jedna osoba została usunięta ze znajomych."
 
-#: views.py:48
+#: views.py:49
 msgid "I would like to add you to my friends."
 msgstr "Chciałbym dodać Cię do moich znajomych."
 
-#: views.py:57
+#: views.py:58
 #, python-format
 msgid "Friendship invitation for %(username)s was created."
 msgstr ""
 "Zaproszenie do znajomych dla użytkownika %(username)s zostało utworzone."
 
-#: views.py:78
+#: views.py:80
 #, python-format
 msgid "User %(username)s removed from friends."
 msgstr "Użytkownik %(username)s został usunięty ze znajomych."
 
-#: views.py:135
+#: views.py:141
 msgid "Invitation deleted."
 msgstr "Zaproszenie usunięte."
 
-#: views.py:151
+#: views.py:158
 msgid "Invitation accepted."
 msgstr "Zaproszenie zaakceptowane."
 
-#: views.py:154
+#: views.py:161
 msgid "Invitation declined."
 msgstr "Zaproszenie odrzucone."
 
-#: templates/friends/base.html:3 templates/friends/friends_list.html:4
+#: contrib/suggestions/models.py:17
+msgid "from user"
+msgstr "od użytkownika"
+
+#: contrib/suggestions/models.py:18
+msgid "to user"
+msgstr "do użytkownika"
+
+#: contrib/suggestions/models.py:19 contrib/suggestions/models.py:40
+msgid "added"
+msgstr "dodano"
+
+#: contrib/suggestions/models.py:33
+msgid "owner"
+msgstr "właściciel"
+
+#: contrib/suggestions/models.py:35
+msgid "name"
+msgstr "nazwa"
+
+#: contrib/suggestions/models.py:38
+msgid "email"
+msgstr "email"
+
+#: contrib/suggestions/models.py:53
+#, python-format
+msgid "%(display_name)s (%(owner)s's contact)"
+msgstr "%(display_name)s (kontakt użytkownika %(owner)s)"
+
+#: contrib/suggestions/views.py:34
+#, python-format
+msgid ""
+"%(total)s people with email found, %(imported)s new contacts imported, %"
+"(suggestions)s new friendship suggestions added."
+msgstr ""
+"Znaleziono %(total)s kontaktów z adresem email, zaimportowano %(imported)s "
+"nowych kontaktów, utworzono %(suggestions)s nowych sugestii znajomości."
+
+#: contrib/suggestions/views.py:36
+msgid "There was an error importing your contacts."
+msgstr "Podczas importowania twoich kontaktów wystąpił błąd."
+
+#: contrib/suggestions/views.py:39
+msgid "We're still importing your contacts. It shouldn't take too long."
+msgstr "Importowanie twoich kontaktów wciąż trwa. Nie potrwa to zbyt długo."
+
+#: contrib/suggestions/templates/friends/suggestions/import_contacts.html:4
+msgid "Import contacts"
+msgstr "Importowanie kontaktów"
+
+#: contrib/suggestions/templates/friends/suggestions/import_contacts.html:8
+msgid "Select service from which you want to import your contacts:"
+msgstr "Wybierz serwis, z którego chcesz zaimportować swoje kontakty:"
+
+#: contrib/suggestions/templates/friends/suggestions/import_contacts.html:13
+msgid ""
+"Import of your contacts is already running. Please wait until it finishes "
+"and then try again."
+msgstr ""
+"Importowanie twoich kontaktów jest w toku. Poczekaj do czasu kiedy się "
+"zakończy i spróbuj ponownie."
+
+#: contrib/suggestions/templates/friends/suggestions/suggested_friends.html:4
+msgid "Suggested friends"
+msgstr "Sugerowani znajomi"
+
+#: contrib/suggestions/templates/friends/suggestions/suggested_friends.html:9
+#: templates/friends/friends_of_friend.html:10
+msgid "invite to friends"
+msgstr "zaproś do znajomych"
+
+#: templates/friends/base.html:4 templates/friends/friends_list.html:4
 msgid "Friends"
 msgstr "Znajomi"
 
@@ -150,6 +221,11 @@ msgstr "Na pewno chcesz usunąć użytkownika %(friend)s ze znajomych?"
 #: templates/friends/friend_remove.html:12
 msgid "Remove"
 msgstr "Usuń"
+
+#: templates/friends/friends_list.html:9
+#: templates/friends/friends_of_friend.html:10
+msgid "remove from friends"
+msgstr "usuń ze znajomych"
 
 #: templates/friends/friends_of_friend.html:4
 #, python-format
@@ -304,5 +380,4 @@ msgid ""
 msgstr ""
 "Twój znajomy <a href=\"%(your_friend_url)s\">%(your_friend)s</a> i <a href="
 "\"%(new_friend_url)s\">%(new_friend)s</a> są teraz znajomymi."
-
 
