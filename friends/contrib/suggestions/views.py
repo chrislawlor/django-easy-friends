@@ -36,7 +36,7 @@ def _import_status(request, results):
             messages.error(request, message=_("There was an error importing your contacts."))
         return True
     else:
-        messages.info(request, _("We're still importing your contacts. We'll let you know when they're ready, it shouldn't take too long."))
+        messages.info(request, _("We're still importing your contacts. It shouldn't take too long."))
         request.session["import_contacts_task_id"] = results.task_id
         return False
 

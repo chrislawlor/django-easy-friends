@@ -50,7 +50,7 @@ class ImportedContact(models.Model):
         return dname
 
     def __unicode__(self):
-        return _("%s (%s's contact)") % (self.display_name, self.owner)
+		return _("%(display_name)s (%(owner)s's contact)") % {'display_name': self.display_name, 'owner': self.owner}
 
     class Meta:
         db_table = 'friends_suggestions_importedcontact'
