@@ -15,9 +15,9 @@ urlpatterns = patterns("friends.contrib.suggestions.views",
         "import_google_contacts",
         name="friends_suggestions_import_google_contacts"),
 
-    url(r"^facebook_auth/$",
-        "facebook_auth",
-        name="friends_suggestions_facebook_auth"),
+    url(r"^import_facebook_contacts/$",
+        "import_facebook_contacts",
+        name="friends_suggestions_import_facebook_contacts"),
 
     url(r"^oauth_access/", include("oauth_access.urls")),
 

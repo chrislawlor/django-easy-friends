@@ -104,19 +104,15 @@ def import_google_contacts(request, redirect_to=None):
 
 
 @login_required
-def facebook_auth(request):
-    try:
-        auth_access_token = UserAssociation.objects.get(
-            user=request.user,
-            service="facebook"
-        )
-        request.session["facebook_token"] = auth_access_token.token
+def import_facebook_contacts(request, access=None, auth_token=None):
+    if auth_token:
+        request.session["facebook_token"] = auth_token
         return HttpResponseRedirect(reverse("friends_suggestions_import_contacts"))
-    except UserAssociation.DoesNotExist:
+    else:
         return HttpResponseRedirect("%s?%s" % (
             reverse("oauth_access_login", args=["facebook", ]),
             urlencode({
-                "next": reverse("friends_suggestions_facebook_auth")
+                "next": reverse("friends_suggestions_import_facebook_contacts")
             })
         ))
 
