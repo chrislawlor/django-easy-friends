@@ -17,7 +17,7 @@ class ModelPersistance(BasePersistance):
         obj, created = ImportedContact.objects.get_or_create(
             owner=credentials["user"],
             email=contact["email"],
-            defaults={"name": contact["name"]}
+            name=contact["name"],
         )
         status["total"] += 1
         if created:

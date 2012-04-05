@@ -1,4 +1,5 @@
 import httplib2
+import facebook
 
 from django.utils import simplejson as json
 
@@ -12,6 +13,7 @@ if issubclass(RUNNER, AsyncRunner):
     from celery.task import Task
 else:
     Task = object
+
 
 class BaseImporter(Task):
 
@@ -51,5 +53,17 @@ class GoogleImporter(BaseImporter):
                     "name": person["title"]["$t"],
                     "email": email["address"],
                 }
+
+
+class FacebookImporter(BaseImporter):
+
+    def get_contacts(self, credentials):
+        graph = facebook.GraphAPI(credentials["facebook_token"])
+        friends = graph.get_connections("me", "friends")
+        for friend in friends["data"]:
+            yield {
+                "name": friend["name"],
+                "email": "",
+            }
 
 

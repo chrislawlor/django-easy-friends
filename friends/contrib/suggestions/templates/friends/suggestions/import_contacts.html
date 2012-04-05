@@ -8,6 +8,7 @@
 		<p>{% trans "Select service from which you want to import your contacts:" %}</p>
 		<ul class="contact-importers">
 			<li><a href="{% url friends_suggestions_import_google_contacts %}">Google</a></li>
+			<li><a href="{% url friends_suggestions_facebook_auth %}">Facebook</a></li>
 		</ul>
 	{% else %}
 		<p>{% trans "Import of your contacts is already running. Please wait until it finishes and then try again." %}</p>

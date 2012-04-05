@@ -1,3 +1,5 @@
+from urllib import urlencode
+
 from django.contrib import messages
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
@@ -7,8 +9,9 @@ from django.utils.translation import ugettext as _
 from django.contrib.auth.decorators import login_required
 
 from gdata.contacts.service import ContactsService
+from oauth_access.models import UserAssociation
 
-from friends.contrib.suggestions.backends.importers import GoogleImporter
+from friends.contrib.suggestions.backends.importers import GoogleImporter, FacebookImporter
 from friends.contrib.suggestions.settings import RUNNER
 from friends.contrib.suggestions.models import FriendshipSuggestion
 
@@ -46,8 +49,9 @@ def import_contacts(request, template_name="friends/suggestions/import_contacts.
     """
     If there is import_contacts_task_id in session pop it up and show info about
     this task using _import_status method.
-    If there is no import_contacts_task_id in session check if there is 
-    google_authsub_token in session and import Google contacts if it is.
+    If there is no import_contacts_task_id in session check if there is: 
+     - google_authsub_token in session and import Google contacts if it is
+     - facebook_token in session and import Facebook contacts if it is
     """
 
     import_in_progress = False
@@ -59,12 +63,21 @@ def import_contacts(request, template_name="friends/suggestions/import_contacts.
         import_in_progress = not _import_status(request, results)
 
     else:
+        runner_class = RUNNER
+
         google_authsub_token = request.session.pop("google_authsub_token", None)
         if google_authsub_token:
-            runner_class = RUNNER
             runner = runner_class(GoogleImporter,
                                   user=request.user,
                                   authsub_token=google_authsub_token)
+            results = runner.import_contacts()
+            import_in_progress = not _import_status(request, results)
+
+        facebook_token = request.session.pop("facebook_token", None)
+        if facebook_token:
+            runner = runner_class(FacebookImporter,
+                                  user=request.user,
+                                  facebook_token=facebook_token)
             results = runner.import_contacts()
             import_in_progress = not _import_status(request, results)
 
@@ -89,4 +102,21 @@ def import_google_contacts(request, redirect_to=None):
                                                        session=True)
     return HttpResponseRedirect(authsub_url)
 
+
+@login_required
+def facebook_auth(request):
+    try:
+        auth_access_token = UserAssociation.objects.get(
+            user=request.user,
+            service="facebook"
+        )
+        request.session["facebook_token"] = auth_access_token.token
+        return HttpResponseRedirect(reverse("friends_suggestions_import_contacts"))
+    except UserAssociation.DoesNotExist:
+        return HttpResponseRedirect("%s?%s" % (
+            reverse("oauth_access_login", args=["facebook", ]),
+            urlencode({
+                "next": reverse("friends_suggestions_facebook_auth")
+            })
+        ))
 
