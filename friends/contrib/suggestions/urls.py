@@ -19,6 +19,10 @@ urlpatterns = patterns("friends.contrib.suggestions.views",
         "import_facebook_contacts",
         name="friends_suggestions_import_facebook_contacts"),
 
+    url(r"^import_twitter_contacts/$",
+        "import_twitter_contacts",
+        name="friends_suggestions_import_twitter_contacts"),
+
     url(r"^oauth_access/", include("oauth_access.urls")),
 
 )

@@ -9,9 +9,8 @@ from django.utils.translation import ugettext as _
 from django.contrib.auth.decorators import login_required
 
 from gdata.contacts.service import ContactsService
-from oauth_access.models import UserAssociation
 
-from friends.contrib.suggestions.backends.importers import GoogleImporter, FacebookImporter
+from friends.contrib.suggestions.backends.importers import GoogleImporter, FacebookImporter, TwitterImporter
 from friends.contrib.suggestions.settings import RUNNER
 from friends.contrib.suggestions.models import FriendshipSuggestion
 
@@ -81,6 +80,14 @@ def import_contacts(request, template_name="friends/suggestions/import_contacts.
             results = runner.import_contacts()
             import_in_progress = not _import_status(request, results)
 
+        twitter_token = request.session.pop("twitter_token", None)
+        if twitter_token:
+            runner = runner_class(TwitterImporter,
+                                  user=request.user,
+                                  twitter_token=twitter_token)
+            results = runner.import_contacts()
+            import_in_progress = not _import_status(request, results)
+
     return render_to_response(template_name,
                               {'import_in_progress': import_in_progress},
                               context_instance=RequestContext(request))
@@ -117,6 +124,22 @@ def import_facebook_contacts(request, access=None, auth_token=None):
             reverse("oauth_access_login", args=["facebook", ]),
             urlencode({
                 "next": reverse("friends_suggestions_import_facebook_contacts")
+            })
+        ))
+
+
+@login_required
+def import_twitter_contacts(request, access=None, auth_token=None):
+    """
+    """
+    if auth_token:
+        request.session["twitter_token"] = auth_token
+        return HttpResponseRedirect(reverse("friends_suggestions_import_contacts"))
+    else:
+        return HttpResponseRedirect("%s?%s" % (
+            reverse("oauth_access_login", args=["twitter", ]),
+            urlencode({
+                "next": reverse("friends_suggestions_import_twitter_contacts")
             })
         ))
 

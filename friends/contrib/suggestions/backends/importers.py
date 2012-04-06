@@ -1,6 +1,13 @@
+try:
+    from urlparse import parse_qs
+except ImportError:
+    from cgi import parse_qs
+
 import httplib2
 import facebook
+import twitter
 
+from django.conf import settings
 from django.utils import simplejson as json
 
 from friends.contrib.suggestions.backends.runners import AsyncRunner
@@ -63,6 +70,30 @@ class FacebookImporter(BaseImporter):
         for friend in friends["data"]:
             yield {
                 "name": friend["name"],
+                "email": "",
+            }
+
+
+class TwitterImporter(BaseImporter):
+    def get_contacts(self, credentials):
+        creds = parse_qs(credentials["twitter_token"])
+        api = twitter.Api(
+            consumer_key=settings.OAUTH_ACCESS_SETTINGS["twitter"]["keys"]["KEY"],
+            consumer_secret=settings.OAUTH_ACCESS_SETTINGS["twitter"]["keys"]["SECRET"],
+            access_token_key=creds["oauth_token"][0],
+            access_token_secret=creds["oauth_token_secret"][0]
+        )
+        friends, data = api.GetFollowers()
+        while data.get("next_cursor"):
+            for friend in friends:
+                yield {
+                    "name": friend.name,
+                    "email": "",
+                }
+            friends, data = api.GetFollowers(cursor=data["next_cursor"])
+        for friend in friends:
+            yield {
+                "name": friend.name,
                 "email": "",
             }
 
