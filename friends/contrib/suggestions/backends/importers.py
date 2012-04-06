@@ -85,3 +85,57 @@ class TwitterImporter(BaseImporter):
             }
 
 
+class YahooImporter(BaseImporter):
+
+    def get_contacts(self, credentials):
+        from oauth_access.access import OAuthAccess
+        yahoo_token = credentials["yahoo_token"]
+        access = OAuthAccess("yahoo")
+        guid = access.make_api_call(
+            "json",
+            "http://social.yahooapis.com/v1/me/guid?format=json",
+            yahoo_token
+        )["guid"]["value"]
+        address_book = access.make_api_call(
+            "json",
+            "http://social.yahooapis.com/v1/user/%s/contacts?format=json&count=max&view=tinyusercard" % guid,
+            yahoo_token,
+        )
+        for contact in address_book["contacts"]["contact"]:
+            # e-mail (if not found skip contact)
+            try:
+                email = self.get_field_value(contact, "email")
+            except KeyError:
+                continue
+            # name (first and last comes together)
+            try:
+                name = self.get_field_value(contact, "name")
+            except KeyError:
+                name = ""
+            if name:
+                first_name = name["givenName"]
+                last_name = name["familyName"]
+                if first_name and last_name:
+                    name = "%s %s" % (first_name, last_name)
+                elif first_name:
+                    name = first_name
+                elif last_name:
+                    name = last_name
+                else:
+                    name = ""
+            yield {
+                "email": email,
+                "name": name,
+            }
+
+    def get_field_value(self, contact, kind):
+        try:
+            for field in contact["fields"]:
+                if field["type"] == kind:
+                    return field["value"]
+        except KeyError:
+            raise Exception("Yahoo data format changed")
+        else:
+            raise KeyError(kind)
+
+
