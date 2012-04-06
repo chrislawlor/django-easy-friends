@@ -77,14 +77,7 @@ class TwitterImporter(BaseImporter):
             access_token_key=credentials["twitter_token"].key,
             access_token_secret=credentials["twitter_token"].secret
         )
-        friends, data = api.GetFollowers()
-        while data.get("next_cursor"):
-            for friend in friends:
-                yield {
-                    "name": friend.name,
-                    "email": "",
-                }
-            friends, data = api.GetFollowers(cursor=data["next_cursor"])
+        friends = api.GetFriends()
         for friend in friends:
             yield {
                 "name": friend.name,
