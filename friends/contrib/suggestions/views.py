@@ -34,7 +34,7 @@ def _import_status(request, results):
     """
     if results.ready():
         if results.status == "SUCCESS":
-            messages.success(request, _("%(total)s people with email found, %(imported)s new contacts imported, %(suggestions)s new friendship suggestions added.") % results.result)
+            messages.success(request, _("%(total)s contacts found, %(imported)s new contacts imported, %(suggestions)s new friendship suggestions added.") % results.result)
         elif results.status == "FAILURE":
             messages.error(request, message=_("There was an error importing your contacts."))
         return True
@@ -105,6 +105,10 @@ def import_google_contacts(request, redirect_to=None):
 
 @login_required
 def import_facebook_contacts(request, access=None, auth_token=None):
+    """
+    If no auth_token is available redirect to Facebook page.
+    If auth_token is availabe, save it into session and redirect to import_contacts view.
+    """
     if auth_token:
         request.session["facebook_token"] = auth_token
         return HttpResponseRedirect(reverse("friends_suggestions_import_contacts"))

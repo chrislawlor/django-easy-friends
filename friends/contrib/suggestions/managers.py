@@ -38,15 +38,27 @@ class FriendshipSuggestionManager(models.Manager):
         created = 0
         imported_contacts = ImportedContact.objects.filter(owner=user)
         for imported_contact in imported_contacts:
-            try:
-                suggested_friend = User.objects.get(email=imported_contact.email)
-            except User.DoesNotExist:
-                suggested_friend = None
-            if suggested_friend and suggested_friend != user \
-            and not Friendship.objects.are_friends(user, suggested_friend) \
-            and not self.are_suggested_friends(user, suggested_friend):
-                self.create(from_user=user, to_user=suggested_friend)
-                created += 1
+            suggested_friends = []
+            # try to find matching user by email
+            if imported_contact.email:
+                try:
+                    suggested_friends.append(User.objects.get(email=imported_contact.email))
+                except User.DoesNotExist:
+                    pass
+            # if matching user not found by email try to match users by name 
+            if not suggested_friends:
+                try:
+                    first_name, last_name = imported_contact.name.split(' ')
+                    suggested_friends = User.objects.filter(first_name=first_name, last_name=last_name)
+                except:
+                    pass
+            if suggested_friends:
+                for suggested_friend in suggested_friends:
+                    if suggested_friend != user \
+                    and not Friendship.objects.are_friends(user, suggested_friend) \
+                    and not self.are_suggested_friends(user, suggested_friend):
+                        self.create(from_user=user, to_user=suggested_friend)
+                        created += 1
         return created
 
 
