@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-04-04 23:35+0200\n"
-"PO-Revision-Date: 2012-04-05 00:03+0200\n"
+"POT-Creation-Date: 2012-04-06 03:26+0200\n"
+"PO-Revision-Date: 2012-04-06 03:28+0200\n"
 "Last-Translator: Maciej Marczewski <maciej@marczewski.net.pl>\n"
 "Language-Team: Polish <kde-i18n-doc@kde.org>\n"
 "MIME-Version: 1.0\n"
@@ -153,20 +153,20 @@ msgstr "email"
 msgid "%(display_name)s (%(owner)s's contact)"
 msgstr "%(display_name)s (kontakt użytkownika %(owner)s)"
 
-#: contrib/suggestions/views.py:34
+#: contrib/suggestions/views.py:36
 #, python-format
 msgid ""
-"%(total)s people with email found, %(imported)s new contacts imported, %"
-"(suggestions)s new friendship suggestions added."
+"%(total)s contacts found, %(imported)s new contacts imported, %(suggestions)"
+"s new friendship suggestions added."
 msgstr ""
-"Znaleziono %(total)s kontaktów z adresem email, zaimportowano %(imported)s "
+"Znaleziono %(total)s kontaktów, zaimportowano %(imported)s "
 "nowych kontaktów, utworzono %(suggestions)s nowych sugestii znajomości."
 
-#: contrib/suggestions/views.py:36
+#: contrib/suggestions/views.py:38
 msgid "There was an error importing your contacts."
 msgstr "Podczas importowania twoich kontaktów wystąpił błąd."
 
-#: contrib/suggestions/views.py:39
+#: contrib/suggestions/views.py:41
 msgid "We're still importing your contacts. It shouldn't take too long."
 msgstr "Importowanie twoich kontaktów jest w toku. Nie potrwa to zbyt długo."
 
@@ -178,7 +178,7 @@ msgstr "Importowanie kontaktów"
 msgid "Select service from which you want to import your contacts:"
 msgstr "Wybierz serwis, z którego chcesz zaimportować swoje kontakty:"
 
-#: contrib/suggestions/templates/friends/suggestions/import_contacts.html:13
+#: contrib/suggestions/templates/friends/suggestions/import_contacts.html:15
 msgid ""
 "Import of your contacts is already running. Please wait until it finishes "
 "and then try again."
