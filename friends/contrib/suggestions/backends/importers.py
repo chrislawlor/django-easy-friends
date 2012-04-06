@@ -1,8 +1,3 @@
-try:
-    from urlparse import parse_qs
-except ImportError:
-    from cgi import parse_qs
-
 import httplib2
 import facebook
 import twitter
@@ -76,12 +71,11 @@ class FacebookImporter(BaseImporter):
 
 class TwitterImporter(BaseImporter):
     def get_contacts(self, credentials):
-        creds = parse_qs(credentials["twitter_token"])
         api = twitter.Api(
             consumer_key=settings.OAUTH_ACCESS_SETTINGS["twitter"]["keys"]["KEY"],
             consumer_secret=settings.OAUTH_ACCESS_SETTINGS["twitter"]["keys"]["SECRET"],
-            access_token_key=creds["oauth_token"][0],
-            access_token_secret=creds["oauth_token_secret"][0]
+            access_token_key=credentials["twitter_token"].key,
+            access_token_secret=credentials["twitter_token"].secret
         )
         friends, data = api.GetFollowers()
         while data.get("next_cursor"):
