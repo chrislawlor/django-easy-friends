@@ -185,7 +185,7 @@ def import_linkedin_contacts(request, access=None, auth_token=None):
         return HttpResponseRedirect(reverse("friends_suggestions_import_contacts"))
     else:
         return HttpResponseRedirect("%s?%s" % (
-            reverse("oauth_access_login", args=["yahoo", ]),
+            reverse("oauth_access_login", args=["linkedin", ]),
             urlencode({
                 "next": reverse("friends_suggestions_import_linkedin_contacts")
             })
