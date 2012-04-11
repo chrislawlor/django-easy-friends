@@ -156,7 +156,6 @@ class LinkedInImporter(BaseImporter):
             first_name = person.find('first-name')
             if first_name is not None and first_name.text:
                 name = first_name.text
-            print name
             last_name = person.find('last-name')
             if last_name is not None and last_name.text:
                 if name:
