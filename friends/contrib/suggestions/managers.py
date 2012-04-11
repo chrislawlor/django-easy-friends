@@ -52,13 +52,20 @@ class FriendshipSuggestionManager(models.Manager):
                     suggested_friends = User.objects.filter(first_name=first_name, last_name=last_name)
                 except:
                     pass
-            if suggested_friends:
-                for suggested_friend in suggested_friends:
-                    if suggested_friend != user \
-                    and not Friendship.objects.are_friends(user, suggested_friend) \
-                    and not self.are_suggested_friends(user, suggested_friend):
-                        self.create(from_user=user, to_user=suggested_friend)
-                        created += 1
+            for suggested_friend in suggested_friends:
+                if suggested_friend != user \
+                and not Friendship.objects.are_friends(user, suggested_friend) \
+                and not self.are_suggested_friends(user, suggested_friend):
+                    self.create(from_user=user, to_user=suggested_friend)
+                    created += 1
+        # we can also search other imported contacts using this user data
+        imported_contacts = ImportedContact.objects.select_related('owner').filter(Q(email=user.email) | Q(name=user.first_name + ' ' + user.last_name))
+        for imported_contact in imported_contacts:
+            if imported_contact.owner != user \
+            and not Friendship.objects.are_friends(user, imported_contact.owner) \
+            and not self.are_suggested_friends(user, imported_contact.owner):
+                self.create(from_user=imported_contact.owner, to_user=user)
+                created += 1
         return created
 
 
