@@ -147,17 +147,18 @@ class LinkedInImporter(BaseImporter):
         access = OAuthAccess("linkedin")
         tree = access.make_api_call(
             "xml",
-            "http://api.linkedin.com/v1/people/~/connections",
+            "http://api.linkedin.com/v1/people/~/connections:(first-name,last-name)",
             linkedin_token,
         )
         persons = list(tree.iter("person"))
         for person in persons:
             name = ''
             first_name = person.find('first-name')
-            if first_name and first_name.text:
+            if first_name is not None and first_name.text:
                 name = first_name.text
+            print name
             last_name = person.find('last-name')
-            if last_name and last_name.text:
+            if last_name is not None and last_name.text:
                 if name:
                     name += ' '
                 name += last_name.text
