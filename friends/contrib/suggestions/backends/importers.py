@@ -139,3 +139,30 @@ class YahooImporter(BaseImporter):
             raise KeyError(kind)
 
 
+class LinkedInImporter(BaseImporter):
+
+    def get_contacts(self, credentials):
+        from oauth_access.access import OAuthAccess
+        linkedin_token = credentials["linkedin_token"]
+        access = OAuthAccess("linkedin")
+        tree = access.make_api_call(
+            "xml",
+            "http://api.linkedin.com/v1/people/~/connections",
+            linkedin_token,
+        )
+        persons = list(tree.iter("person"))
+        for person in persons:
+            name = ''
+            first_name = person.find('first-name')
+            if first_name and first_name.text:
+                name = first_name.text
+            last_name = person.find('last-name')
+            if last_name and last_name.text:
+                if name:
+                    name += ' '
+                name += last_name.text
+            yield {
+                "email": "",
+                "name": name,
+            }
+
