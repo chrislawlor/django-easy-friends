@@ -43,13 +43,13 @@ Configuration
 =============
 Availale settings:
 
-* ``FRIENDS_USE_NOTIFICATION_APP`` (default: ``True``)
+``FRIENDS_USE_NOTIFICATION_APP`` (default: ``True``)
   By default ``notification`` app is used if it is enabled in ``INSTALLED_APPS``, if this setting is set to ``False`` ``notification`` app will not be used.
-* ``SHOW_FRIENDS_OF_FRIEND`` (default: ``False``)
+``SHOW_FRIENDS_OF_FRIEND`` (default: ``False``)
   Allow users to view list of friends of their friends.
-* ``NOTIFY_ABOUT_NEW_FRIENDS_OF_FRIEND`` (default: ``False``)
+``NOTIFY_ABOUT_NEW_FRIENDS_OF_FRIEND`` (default: ``False``)
   If ``notification`` app is enabled and ``FRIENDS_USE_NOTIFICATION_APP`` is set to ``True`` and this setting is set to ``True`` users will be notified when one of their friends have new friend.
-* ``NOTIFY_ABOUT_FRIENDS_REMOVAL`` (default: ``False``)
+``NOTIFY_ABOUT_FRIENDS_REMOVAL`` (default: ``False``)
   If ``notification`` app is enabled and ``FRIENDS_USE_NOTIFICATION_APP`` is set to ``True`` and this setting is set to ``True`` users will be notified when one of their friends removes them from friends.
 
 Advanced usage
@@ -110,9 +110,10 @@ Configuration
 =============
 Available settings:
 
-* ``FRIENDS_SUGGESTIONS_IMPORT_RUNNER`` (default: ``friends.contrib.suggestions.backends.runners.SynchronousRunner``)
+``FRIENDS_SUGGESTIONS_IMPORT_RUNNER`` (default: ``friends.contrib.suggestions.backends.runners.SynchronousRunner``)
   This is class that is used for importing contacts. Default is synchronous runner but you should really use `Celery <http://celeryproject.org/>`_ (and `django-celery <http://ask.github.com/django-celery/>`_) so this setting should be set to ``friends.contrib.suggestions.backends.runners.AsyncRunner``.
-* There is one setting that is needed for ``django-oauth-access``::
+
+There is one setting that is needed for ``django-oauth-access``::
 
     OAUTH_ACCESS_SETTINGS = {
         'facebook': {
@@ -164,33 +165,33 @@ Available settings:
         },
     }
 
-  Remember to change ``YOURAPPKEY`` and ``yourappsecretcode`` for each service. You can get them by registering your applications on this sites:
+Remember to change ``YOURAPPKEY`` and ``yourappsecretcode`` for each service. You can get them by registering your applications on this sites:
 
-    * Facebook: https://developers.facebook.com/apps
-    * Twitter: https://dev.twitter.com/apps/new
-    * Yahoo: https://developer.apps.yahoo.com/projects
-    * LinkedIn: https://www.linkedin.com/secure/developer
+* Facebook: https://developers.facebook.com/apps
+* Twitter: https://dev.twitter.com/apps/new
+* Yahoo: https://developer.apps.yahoo.com/projects
+* LinkedIn: https://www.linkedin.com/secure/developer
 
 Advanced usage
 ==============
 By default friends suggestions are created after each contacts import but there are other situations when you could want to create friends suggestions. One example is when new user is registered on your site. This new user has no imported contacts yet but other users have some imported contacts and maybe new user matches some of the already imported contact.
 Here is how to create friends suggestions on user activation using some signals:
 
-* First create signal receiver::
+First create signal receiver::
 
     def find_friends_suggestions(sender, user, **kwargs):
         from friends.contrib.suggestions.models import FriendshipSuggestion
         FriendshipSuggestion.objects.create_suggestions_for_user_using_imported_contacts(user)
 
-* If `django-easy-userena <https://github.com/barszczmm/django-easy-userena/>`_ app is used for managing users registration::
+If `django-easy-userena <https://github.com/barszczmm/django-easy-userena/>`_ (or `django-userena <https://github.com/bread-and-pepper/django-userena>`_) app is used for managing users registration use this code::
 
     from userena.signals import activation_complete
     activation_complete.connect(find_friends_suggestions, dispatch_uid="find_friends_suggestions_on_activation_complete")
 
-* If `django-registration <https://bitbucket.org/ubernostrum/django-registration/>`_ app is used::
+If `django-registration <https://bitbucket.org/ubernostrum/django-registration/>`_ app is used used this code::
 
     from registration.signals import user_activated
-    user_activated.connect(find_friends_suggestions, dispatch_uid="find_friends_suggestions_on_activation_complete")
+    user_activated.connect(find_friends_suggestions, dispatch_uid="find_friends_suggestions_on_user_activated")
 
 
 Credits
