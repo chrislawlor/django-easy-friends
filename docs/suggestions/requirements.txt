@@ -1,7 +1,0 @@
-# friends.contrib.suggestions requirements:
-httplib2 # tested with version 2-0.7.4
-gdata # tested with version 2.0.16
--e git://github.com/pythonforfacebook/facebook-sdk.git#egg=facebook-sdk
--e git://github.com/eldarion/django-oauth-access.git#egg=django-oauth-access
--e git://github.com/simplegeo/python-oauth2.git#egg=python-oauth2
-python-twitter
