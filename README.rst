@@ -188,7 +188,7 @@ If `django-easy-userena <https://github.com/barszczmm/django-easy-userena/>`_ (o
     from userena.signals import activation_complete
     activation_complete.connect(find_friends_suggestions, dispatch_uid="find_friends_suggestions_on_activation_complete")
 
-If `django-registration <https://bitbucket.org/ubernostrum/django-registration/>`_ app is used used this code::
+If `django-registration <https://bitbucket.org/ubernostrum/django-registration/>`_ app is used use this code::
 
     from registration.signals import user_activated
     user_activated.connect(find_friends_suggestions, dispatch_uid="find_friends_suggestions_on_user_activated")
