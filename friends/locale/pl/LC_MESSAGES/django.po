@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-04-06 03:26+0200\n"
-"PO-Revision-Date: 2012-04-06 03:28+0200\n"
+"POT-Creation-Date: 2012-04-24 15:01+0200\n"
+"PO-Revision-Date: 2012-04-24 15:07+0200\n"
 "Last-Translator: Maciej Marczewski <maciej@marczewski.net.pl>\n"
 "Language-Team: Polish <kde-i18n-doc@kde.org>\n"
 "MIME-Version: 1.0\n"
@@ -17,37 +17,50 @@ msgstr ""
 "|| n%100>=20) ? 1 : 2)\n"
 "X-Generator: Lokalize 1.0\n"
 
-#: forms.py:20
+#: forms.py:19
 msgid "Message"
 msgstr "Wiadomość"
 
-#: forms.py:30 forms.py:82
+#: forms.py:29 forms.py:86 forms.py:111
 msgid "Unknown user."
 msgstr "Nieznany użytkownik."
 
-#: forms.py:37
+#: forms.py:36
 msgid "You can't request friendship with yourself."
 msgstr "Nie możesz zaprosić sam siebie do znajomych."
 
-#: forms.py:41
+#: forms.py:40
 #, python-format
 msgid "You are already friends with %(username)s."
 msgstr "Już jesteście znajomymi z %(username)s."
 
-#: forms.py:49
+#: forms.py:45
+#, python-format
+msgid "You can't invite %(username)s to friends."
+msgstr "Nie możesz zaprosić użytkownika %(username)s do znajomych."
+
+#: forms.py:53
 #, python-format
 msgid "Already requested friendship with %(username)s."
 msgstr "Użytkownik %(username)s został już zaproszony do znajomych."
 
-#: forms.py:57
+#: forms.py:61
 #, python-format
 msgid "%(username)s has already requested friendship with you."
 msgstr "Użytkownik %(username)s zaprosił cię już do znajomych."
 
-#: forms.py:89
+#: forms.py:93
 #, python-format
 msgid "%(username)s and you are not friends."
 msgstr "Nie jesteście znajomymi z użytkownikiem %(username)s."
+
+#: forms.py:118
+#, python-format
+msgid ""
+"%(username)s and you are friends. You can't block user that is your friend."
+msgstr ""
+"Użytkownik %(username)s i ty jesteście znajomymi. Nie możesz zablokować "
+"użytkownika, który jest twoim znajomym."
 
 #: management.py:12
 msgid "Invitation received"
@@ -109,18 +122,28 @@ msgstr ""
 
 #: views.py:80
 #, python-format
-msgid "User %(username)s removed from friends."
+msgid "User %(username)s was removed from friends."
 msgstr "Użytkownik %(username)s został usunięty ze znajomych."
 
-#: views.py:141
+#: views.py:102
+#, python-format
+msgid "User %(username)s was blocked from sending invitations."
+msgstr "Użytkownik %(username)s został zablokowany."
+
+#: views.py:124
+#, python-format
+msgid "User %(username)s was unblocked from sending invitations."
+msgstr "Użytkownik %(username)s został odblokowany."
+
+#: views.py:191
 msgid "Invitation deleted."
 msgstr "Zaproszenie usunięte."
 
-#: views.py:158
+#: views.py:208
 msgid "Invitation accepted."
 msgstr "Zaproszenie zaakceptowane."
 
-#: views.py:161
+#: views.py:211
 msgid "Invitation declined."
 msgstr "Zaproszenie odrzucone."
 
@@ -159,8 +182,8 @@ msgid ""
 "%(total)s contacts found, %(imported)s new contacts imported, %(suggestions)"
 "s new friendship suggestions added."
 msgstr ""
-"Znaleziono %(total)s kontaktów, zaimportowano %(imported)s "
-"nowych kontaktów, utworzono %(suggestions)s nowych sugestii znajomości."
+"Znaleziono %(total)s kontaktów, zaimportowano %(imported)s nowych kontaktów, "
+"utworzono %(suggestions)s nowych sugestii znajomości."
 
 #: contrib/suggestions/views.py:38
 msgid "There was an error importing your contacts."
@@ -178,7 +201,7 @@ msgstr "Importowanie kontaktów"
 msgid "Select service from which you want to import your contacts:"
 msgstr "Wybierz serwis, z którego chcesz zaimportować swoje kontakty:"
 
-#: contrib/suggestions/templates/friends/suggestions/import_contacts.html:15
+#: contrib/suggestions/templates/friends/suggestions/import_contacts.html:17
 msgid ""
 "Import of your contacts is already running. Please wait until it finishes "
 "and then try again."
@@ -198,6 +221,14 @@ msgstr "zaproś do znajomych"
 #: templates/friends/base.html:4 templates/friends/friends_list.html:4
 msgid "Friends"
 msgstr "Znajomi"
+
+#: templates/friends/blocked_users_list.html:4
+msgid "Blocked users"
+msgstr "Zablokowaniu użytkownicy"
+
+#: templates/friends/blocked_users_list.html:9
+msgid "unblock"
+msgstr "odblokuj"
 
 #: templates/friends/friend_invite.html:4
 #, python-format
@@ -250,7 +281,11 @@ msgstr "Zaakceptuj"
 msgid "Decline"
 msgstr "Odrzuć"
 
-#: templates/friends/invitation_show.html:19
+#: templates/friends/invitation_show.html:17
+msgid "Decline and block"
+msgstr "Odrzuć i zablokuj"
+
+#: templates/friends/invitation_show.html:20
 msgid "Delete"
 msgstr "Usuń"
 
@@ -285,6 +320,23 @@ msgstr "Zaproszenie"
 #: templates/friends/invitations_list.html:22
 msgid "Details"
 msgstr "Szczegóły"
+
+#: templates/friends/user_block.html:4
+#, python-format
+msgid "Block %(blocked)s from sending invitations"
+msgstr "Zablokuj %(blocked)s"
+
+#: templates/friends/user_block.html:8
+#, python-format
+msgid ""
+"Are you sure you want to block %(blocked)s from sending you invitations?"
+msgstr ""
+"Na pewno chcesz zablokować użytkownikowi %(blocked)s możliwość wysyłania ci "
+"zaproszeń?"
+
+#: templates/friends/user_block.html:12
+msgid "Block"
+msgstr "Zablokuj"
 
 #: templates/notification/friends_accept/full.txt:1
 #, python-format
@@ -380,4 +432,5 @@ msgid ""
 msgstr ""
 "Twój znajomy <a href=\"%(your_friend_url)s\">%(your_friend)s</a> i <a href="
 "\"%(new_friend_url)s\">%(new_friend)s</a> są teraz znajomymi."
+
 
