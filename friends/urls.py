@@ -15,6 +15,18 @@ urlpatterns = patterns('friends.views',
        'remove_friend',
        name='friends_remove'),
 
+    url(r'^block/(?P<username>[\.\w]+)/$',
+       'block_user',
+       name='friends_block_user'),
+
+    url(r'^unblock/(?P<username>[\.\w]+)/$',
+       'unblock_user',
+       name='friends_unblock_user'),
+
+    url(r'^blocked/$',
+       'list_blocked_users',
+       name='friends_blocked_users'),
+
     url(r'^invitations/received/$',
        'list_received_invitations',
        name='friends_received_invitations'),

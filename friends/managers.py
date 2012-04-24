@@ -21,10 +21,29 @@ class FriendshipManager(models.Manager):
         ).count() > 0
 
     def remove(self, user1, user2):
-        friendship = self.filter(from_user=user1, to_user=user2)
-        if not friendship:
-            friendship = self.filter(from_user=user2, to_user=user1)
-        if friendship:
-            friendship.delete()
+        friendships = self.filter(from_user=user1, to_user=user2)
+        if not friendships:
+            friendships = self.filter(from_user=user2, to_user=user1)
+        if friendships:
+            friendships.delete()
 
+
+class FriendshipInvitationManager(models.Manager):
+
+    def remove(self, user1, user2):
+        invitations = self.filter(from_user=user1, to_user=user2)
+        if not invitations:
+            invitations = self.filter(from_user=user2, to_user=user1)
+        if invitations:
+            invitations.delete()
+
+
+class BlockingManager(models.Manager):
+
+    def blocked_for_user(self, user):
+        blocked = []
+        qs = self.filter(from_user=user).select_related(depth=1)
+        for blocking in qs:
+            blocked.append(blocking.to_user)
+        return blocked
 

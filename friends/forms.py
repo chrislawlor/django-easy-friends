@@ -1,9 +1,8 @@
 from django import forms
-from django.conf import settings
 from django.utils.translation import ugettext as _
 from django.contrib.auth.models import User
 
-from friends.models import Friendship, FriendshipInvitation
+from friends.models import Friendship, FriendshipInvitation, Blocking
 
 
 class UserForm(forms.Form):
@@ -39,6 +38,11 @@ class InviteFriendForm(UserForm):
         if Friendship.objects.are_friends(self.user, to_user):
             raise forms.ValidationError(
                 _(u"You are already friends with %(username)s.") % {'username': to_user.username}
+            )
+        blocking = Blocking.objects.filter(from_user=to_user, to_user=self.user)
+        if blocking.count() > 0:
+            raise forms.ValidationError(
+                _(u"You can't invite %(username)s to friends.") % {'username': to_user.username}
             )
         previous_invitations_to = FriendshipInvitation.objects.filter(
             to_user=to_user,
@@ -93,5 +97,35 @@ class RemoveFriendForm(UserForm):
     def save(self):
         to_user = User.objects.get(username=self.cleaned_data["to_user"])
         Friendship.objects.remove(self.user, to_user)
+
+
+class BlockUserForm(UserForm):
+
+    to_user = forms.CharField(widget=forms.HiddenInput)
+
+    def clean_to_user(self):
+        to_username = self.cleaned_data["to_user"]
+        try:
+            User.objects.get(username=to_username)
+        except User.DoesNotExist:
+            raise forms.ValidationError(_(u"Unknown user."))
+        return self.cleaned_data["to_user"]
+
+    def clean(self):
+        to_user = User.objects.get(username=self.cleaned_data["to_user"])
+        if Friendship.objects.are_friends(self.user, to_user):
+            raise forms.ValidationError(
+                _(u"%(username)s and you are friends. You can't block user that is your friend.") % {'username': to_user.username}
+            )
+        return self.cleaned_data
+
+    def save(self):
+        to_user = User.objects.get(username=self.cleaned_data["to_user"])
+        blocking = Blocking(
+            from_user=self.user,
+            to_user=to_user,
+        )
+        blocking.save()
+        return blocking
 
 

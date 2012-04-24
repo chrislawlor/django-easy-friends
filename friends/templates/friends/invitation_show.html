@@ -14,6 +14,7 @@
 		{% if user == invitation.to_user %}
 			<a href="{% url friends_accept_invitation invitation.pk %}">{% trans "Accept" %}</a>
 			<a href="{% url friends_decline_invitation invitation.pk %}">{% trans "Decline" %}</a>
+			<a href="{% url friends_block_user invitation.from_user.username %}">{% trans "Decline and block" %}</a>
 		{% endif %}
 		{% if user == invitation.from_user %}
 			<a href="{% url friends_remove_invitation invitation.pk %}">{% trans "Delete" %}</a>

@@ -12,7 +12,7 @@ Features
 ========
 * Sending invitations
 * Accepting and declining invitations
-* Blocking users from sending invitations (TODO)
+* Blocking users from sending invitations
 * Listing friends
 * Listing friends of friend (optional)
 
@@ -69,7 +69,7 @@ friends.contrib.suggestions application
 
 Features
 ========
-* importing contacts from:
+* Importing contacts from:
 
   * Facebook
   * Google
@@ -77,7 +77,7 @@ Features
   * Twitter
   * LinkedIn
 
-* creating friendship suggestions based on imported contacts
+* Creating friendship suggestions based on imported contacts
 
 Requirements
 ============
@@ -196,7 +196,7 @@ If `django-registration <https://bitbucket.org/ubernostrum/django-registration/>
 
 Credits
 =======
-This app is based on `django-contacts-import <https://github.com/eldarion/django-contacts-import>`_ app with some code taken from its forks.
+This app is based on `django-contacts-import <https://github.com/eldarion/django-contacts-import>`_ app with some code taken from some of its forks.
 
 
 

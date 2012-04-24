@@ -7,8 +7,8 @@ from django.contrib.auth.models import User
 from django.contrib import messages
 from django.core.exceptions import PermissionDenied
 
-from friends.models import Friendship, FriendshipInvitation
-from friends.forms import InviteFriendForm, RemoveFriendForm
+from friends.models import Friendship, FriendshipInvitation, Blocking
+from friends.forms import InviteFriendForm, RemoveFriendForm, BlockUserForm
 from friends import settings as friends_settings
 
 
@@ -77,7 +77,7 @@ def remove_friend(request, username, redirect_to_view=None):
         form = RemoveFriendForm(data=request.POST, user=request.user)
         if form.is_valid():
             form.save()
-            messages.success(request, _("User %(username)s removed from friends.") % {'username': username}, fail_silently=True)
+            messages.success(request, _("User %(username)s was removed from friends.") % {'username': username}, fail_silently=True)
             if not redirect_to_view:
                 redirect_to_view = list_friends
             return redirect(redirect_to_view)
@@ -86,6 +86,56 @@ def remove_friend(request, username, redirect_to_view=None):
     return render_to_response('friends/friend_remove.html',
                               {'form': form,
                                'friend': friend},
+                              context_instance=RequestContext(request))
+
+
+@login_required
+def block_user(request, username, redirect_to_view=None):
+    """
+    Block user from sending invitations.
+    """
+    to_user = get_object_or_404(User, username=username)
+    if request.method == "POST":
+        form = BlockUserForm(data=request.POST, user=request.user)
+        if form.is_valid():
+            form.save()
+            messages.success(request, _("User %(username)s was blocked from sending invitations.") % {'username': username}, fail_silently=True)
+            FriendshipInvitation.objects.remove(to_user, request.user)
+            if not redirect_to_view:
+                redirect_to_view = list_blocked_users
+            return redirect(redirect_to_view)
+    else:
+        form = BlockUserForm(initial={'to_user': username})
+    return render_to_response('friends/user_block.html',
+                              {'form': form,
+                               'blocked': to_user},
+                              context_instance=RequestContext(request))
+
+
+@login_required
+def unblock_user(request, username, redirect_to_view=None):
+    """
+    Unblock user from sending invitations.
+    """
+    to_user = get_object_or_404(User, username=username)
+    blocking = Blocking.objects.filter(from_user=request.user, to_user=to_user)
+    blocking.delete()
+
+    messages.success(request, _("User %(username)s was unblocked from sending invitations.") % {'username': username}, fail_silently=True)
+
+    if not redirect_to_view:
+        redirect_to_view = list_blocked_users
+    return redirect(redirect_to_view)
+
+
+@login_required
+def list_blocked_users(request):
+    """
+    Lists users blocked from sending invitations.
+    """
+    blocked = Blocking.objects.blocked_for_user(request.user)
+    return render_to_response('friends/blocked_users_list.html',
+                              {'friends': blocked},
                               context_instance=RequestContext(request))
 
 

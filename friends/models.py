@@ -4,7 +4,7 @@ from django.db.models.signals import pre_delete, post_save
 from django.contrib.auth.models import User
 
 from friends.utils import get_datetime_now
-from friends.managers import FriendshipManager
+from friends.managers import FriendshipManager, FriendshipInvitationManager, BlockingManager
 from friends import settings as friends_settings
 
 
@@ -24,6 +24,19 @@ class Friendship(models.Model):
         unique_together = [("to_user", "from_user")]
 
 
+class Blocking(models.Model):
+    """
+    A blocking is used to block user from sending invitations to another user
+    (to protect from invitation spamming).
+    """
+
+    from_user = models.ForeignKey(User, related_name="blocking")
+    to_user = models.ForeignKey(User, related_name="blocked_by")
+    added = models.DateTimeField(default=get_datetime_now)
+
+    objects = BlockingManager()
+
+
 class FriendshipInvitation(models.Model):
     """
     A friendship invite is an invitation from one user to another to be
@@ -34,6 +47,8 @@ class FriendshipInvitation(models.Model):
     to_user = models.ForeignKey(User, related_name="invitations_to")
     message = models.TextField()
     sent = models.DateTimeField(default=get_datetime_now)
+
+    objects = FriendshipInvitationManager()
 
     def accept(self):
         if not Friendship.objects.are_friends(self.to_user, self.from_user):
