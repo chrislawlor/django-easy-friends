@@ -18,10 +18,13 @@ class AreFriendsNode(template.Node):
     def render(self, context):
         user1 = self.user1.resolve(context)
         user2 = self.user2.resolve(context)
-        if Friendship.objects.are_friends(user1, user2):
-            friends = True
-        else:
+        if user1.is_anonymous() or user2.is_anonymous():
             friends = False
+        else:
+            if Friendship.objects.are_friends(user1, user2):
+                friends = True
+            else:
+                friends = False
         if self.varname:
             context[self.varname] = friends
             return ""
