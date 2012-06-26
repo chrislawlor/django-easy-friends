@@ -122,7 +122,8 @@ There is one setting that is needed for ``django-oauth-access``::
                 'SECRET': 'yourappsecretcode',
             },
            'endpoints': {
-                'authorize': 'https://graph.facebook.com/oauth/authorize',
+                #'authorize': 'https://graph.facebook.com/oauth/authorize',
+                'authorize': 'https://www.facebook.com/dialog/oauth/', # url above may be blocked in user browser by something like Ghostery so this one is safer
                 'access_token': 'https://graph.facebook.com/oauth/access_token',
                 'callback': 'friends.contrib.suggestions.views.import_facebook_contacts',
             },

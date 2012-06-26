@@ -139,7 +139,7 @@ def import_facebook_contacts(request, access=None, auth_token=None):
         return HttpResponseRedirect("%s?%s" % (
             reverse("oauth_access_login", args=["facebook", ]),
             urlencode({
-                "next": reverse("friends_suggestions_import_facebook_contacts")
+                "next": request.build_absolute_uri()
             })
         ))
 
@@ -155,7 +155,7 @@ def import_twitter_contacts(request, access=None, auth_token=None):
         return HttpResponseRedirect("%s?%s" % (
             reverse("oauth_access_login", args=["twitter", ]),
             urlencode({
-                "next": reverse("friends_suggestions_import_twitter_contacts")
+                "next": request.build_absolute_uri()
             })
         ))
 
@@ -171,7 +171,7 @@ def import_yahoo_contacts(request, access=None, auth_token=None):
         return HttpResponseRedirect("%s?%s" % (
             reverse("oauth_access_login", args=["yahoo", ]),
             urlencode({
-                "next": reverse("friends_suggestions_import_yahoo_contacts")
+                "next": request.build_absolute_uri()
             })
         ))
 
@@ -187,7 +187,7 @@ def import_linkedin_contacts(request, access=None, auth_token=None):
         return HttpResponseRedirect("%s?%s" % (
             reverse("oauth_access_login", args=["linkedin", ]),
             urlencode({
-                "next": reverse("friends_suggestions_import_linkedin_contacts")
+                "next": request.build_absolute_uri()
             })
         ))
 
