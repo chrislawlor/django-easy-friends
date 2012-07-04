@@ -44,13 +44,15 @@ def _import_status(request, results):
 
 
 @login_required
-def import_contacts(request, template_name="friends/suggestions/import_contacts.html"):
+def import_contacts(request,
+                    template_name="friends/suggestions/import_contacts.html",
+                    extra_context=None):
     """
     If there is import_contacts_task_id in session pop it up and show info about
     this task using _import_status method.
-    If there is no import_contacts_task_id in session check if there is: 
-     - google_authsub_token in session and import Google contacts if it is
-     - facebook_token in session and import Facebook contacts if it is
+    If there is no import_contacts_task_id in session check if there is 
+    google_authsub_token, facebook_token, twitter_token, yahoo_token or
+    linkedin_token in session and import contacts according to this token.
     """
 
     import_in_progress = False
@@ -104,8 +106,11 @@ def import_contacts(request, template_name="friends/suggestions/import_contacts.
             results = runner.import_contacts()
             import_in_progress = not _import_status(request, results)
 
+    if not extra_context:
+        extra_context = dict()
+    extra_context['import_in_progress'] = import_in_progress
     return render_to_response(template_name,
-                              {'import_in_progress': import_in_progress},
+                              extra_context,
                               context_instance=RequestContext(request))
 
 
