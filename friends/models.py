@@ -1,7 +1,8 @@
 from django.conf import settings
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
-from django.db.models.signals import pre_delete, post_save
+from django.db.models.signals import pre_delete, post_save, m2m_changed
+from django.core.exceptions import ValidationError
 from django.contrib.auth.models import User
 
 from friends.utils import get_datetime_now
@@ -63,6 +64,43 @@ class FriendshipInvitation(models.Model):
     def decline(self):
         self.delete()
 
+
+class FriendList(models.Model):
+    title = models.CharField(_("title"), max_length=100)
+    created = models.DateTimeField(_("created"), auto_now_add=True)
+    owner = models.ForeignKey(User, related_name='lists')
+    friends = models.ManyToManyField(User)
+    
+    def __unicode__(self):
+        return "%s List: %s" % (self.owner, self.title)
+    
+
+def only_add_friends(sender, instance, action, reverse, model, pk_set, *args, **kwargs):
+    friendlist = instance
+    if action == 'pre_add' and not reverse and model == User:
+        for pk in pk_set:
+            friend = User.objects.get(pk=pk)
+            if not Friendship.objects.are_friends(friendlist.owner, friend):
+                raise ValidationError("FriendList owner id %d is not friends with User id: %d" % (friendlist.id, friend.id))
+
+m2m_changed.connect(only_add_friends, sender=FriendList.friends.through,
+                    dispatch_uid='validate_adding_friends')
+
+
+def remove_deleted_friendships_from_list(sender, instance, **kwargs):
+    """
+    When a friendship is deleted, remove each user from each other's lists.
+    """
+    user1 = instance.from_user
+    user2 = instance.to_user
+    
+    for user, other_user in [(user1, user2), (user2, user2)]:
+        lists = FriendList.objects.filter(owner=user)
+        for l in lists:
+            if other_user in l.friends.all():
+                l.friends.remove(other_user)
+                
+pre_delete.connect(remove_deleted_friendships_from_list, sender=Friendship, dispatch_uid='friends_remove_deleted_friends_from_lists')
 
 
 # signals receivers to send notifications
