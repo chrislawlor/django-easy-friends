@@ -2,7 +2,7 @@ from django import forms
 from django.utils.translation import ugettext as _
 from django.contrib.auth.models import User
 
-from friends.models import Friendship, FriendshipInvitation, Blocking
+from friends.models import Friendship, FriendshipInvitation, Blocking, FriendList
 
 
 class UserForm(forms.Form):
@@ -127,5 +127,10 @@ class BlockUserForm(UserForm):
         )
         blocking.save()
         return blocking
+
+
+class FriendListForm(forms.ModelForm):
+    class Meta:
+        model = FriendList
 
 

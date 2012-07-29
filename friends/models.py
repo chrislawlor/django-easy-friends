@@ -65,17 +65,38 @@ class FriendshipInvitation(models.Model):
         self.delete()
 
 
+class FriendListManager(models.Manager):
+    def get_query_set(self, *args, **kwargs):
+        return super(FriendListManager, self).get_query_set(*args, **kwargs).filter(deleted=False)
+    
+    def deleted(self, *args, **kwargs):
+        return super(FriendListManager, self).get_query_set(*args, **kwargs).filter(deleted=True)
+
+
 class FriendList(models.Model):
     title = models.CharField(_("title"), max_length=100)
     created = models.DateTimeField(_("created"), auto_now_add=True)
     owner = models.ForeignKey(User, related_name='lists')
     friends = models.ManyToManyField(User)
+    deleted = models.BooleanField(default=False)
+    
+    objects = FriendListManager()
     
     def __unicode__(self):
         return "%s List: %s" % (self.owner, self.title)
     
+    def delete(self, *args, **kwargs):
+        if kwargs.get('force_delete', False):
+            kwargs.pop('force_delete')
+            super(FriendList).delete(*args, **kwargs)
+        self.deleted = True
+        self.save()
+    
 
 def only_add_friends(sender, instance, action, reverse, model, pk_set, *args, **kwargs):
+    """
+    Validates that a user is a friend before adding them to a FriendList.
+    """
     friendlist = instance
     if action == 'pre_add' and not reverse and model == User:
         for pk in pk_set:
