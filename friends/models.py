@@ -24,6 +24,9 @@ class Friendship(models.Model):
 
     class Meta:
         unique_together = [("to_user", "from_user")]
+    
+    def __unicode__(self):
+        return "%s and %s" % (self.to_user, self.from_user)
 
 
 class Blocking(models.Model):
@@ -77,7 +80,7 @@ class FriendList(models.Model):
     title = models.CharField(_("title"), max_length=100)
     created = models.DateTimeField(_("created"), auto_now_add=True)
     owner = models.ForeignKey(User, related_name='lists')
-    friends = models.ManyToManyField(User)
+    friends = models.ManyToManyField(User, blank=True, null=True)
     deleted = models.BooleanField(default=False)
     
     objects = FriendListManager()
