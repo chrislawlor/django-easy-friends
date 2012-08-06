@@ -7,19 +7,19 @@ urlpatterns = patterns('friends.views',
        'list_friends',
        name='friends_friends'),
 
-    url(r'^invite/(?P<username>[\.\w]+)/$',
+    url(r'^invite/(?P<username>[\.\w-]+)/$',
        'invite_friend',
        name='friends_invite'),
 
-    url(r'^remove/(?P<username>[\.\w]+)/$',
+    url(r'^remove/(?P<username>[\.\w-]+)/$',
        'remove_friend',
        name='friends_remove'),
 
-    url(r'^block/(?P<username>[\.\w]+)/$',
+    url(r'^block/(?P<username>[\.\w-]+)/$',
        'block_user',
        name='friends_block_user'),
 
-    url(r'^unblock/(?P<username>[\.\w]+)/$',
+    url(r'^unblock/(?P<username>[\.\w-]+)/$',
        'unblock_user',
        name='friends_unblock_user'),
 
@@ -53,7 +53,7 @@ urlpatterns = patterns('friends.views',
        {'resp': 'd'},
        name='friends_decline_invitation'),
 
-    url(r'^of_friend/(?P<username>[\.\w]+)/$',
+    url(r'^of_friend/(?P<username>[\.\w-]+)/$',
         'list_friend_friends',
         name='friends_friend_friends'),
 
