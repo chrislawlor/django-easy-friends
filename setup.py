@@ -21,6 +21,7 @@ setup(
     include_package_data = True,
     package_data = {
         "friends": [
+            "templates/friends/*/*.html",
             "templates/notification/*/*.html",
             "templates/notification/*/*.txt",
         ]
