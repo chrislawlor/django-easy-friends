@@ -1,1 +1,1 @@
-recursive-include friends/templates/notification *.html *.txt
+recursive-include friends/templates *.html *.txt
